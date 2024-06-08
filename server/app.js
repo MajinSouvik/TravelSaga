@@ -7,6 +7,10 @@ const {DB_LINK}=require("./credentials")
 
 app=express()
 
+mongoose.connect(DB_LINK)
+.then((db) =>console.log("database connected!!"))
+.catch(err => console.log(err))
+
 app.use(
   cors({
     origin: ["http://localhost:3000"],
@@ -14,14 +18,10 @@ app.use(
     credentials: true,
   })
 );
-
-mongoose.connect(DB_LINK)
-.then((db) =>console.log("database connected!!"))
-.catch(err => console.log(err))
-
-
 app.use(express.json())
 app.use(cookieParser());
+
+
 app.use("/",authRoutes)
 
 
