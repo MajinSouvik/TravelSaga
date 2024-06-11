@@ -2,9 +2,9 @@ import { useState, useEffect} from "react"
 import axios from "axios"
 import {useNavigate} from "react-router-dom"
 import {useCookies} from "react-cookie"
+import {connect} from "react-redux"
 
-
-function Login(){
+function Login(props){
     const navigate=useNavigate()
     const [cookies]=useCookies([])
     const [values, setValues] = useState({ username: "", password: "" });
@@ -23,7 +23,7 @@ function Login(){
                ...values
             },{ withCredentials: true });
             if(resp.data.status){
-                console.log("Kansa")
+                props.setUser(values.username)
                 navigate("/")
             }
         } catch (err) {
@@ -64,4 +64,14 @@ function Login(){
     )
 }
 
-export default Login
+const mapStateToProps = (state) =>{
+    return {
+        auth:state.auth.user
+    }
+}
+
+const mapDispatchToProps = (dispatch) =>{
+    return {setUser:(user)=>dispatch({type:"SET_USER", payload:user})}
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(Login)

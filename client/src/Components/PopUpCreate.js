@@ -3,8 +3,8 @@ import {storage} from "../firebase"
 import {ref, uploadBytes, listAll, getDownloadURL} from "firebase/storage"
 import {v4} from "uuid"
 import { connect } from "react-redux"
-
-
+import axios from "axios"
+import { tableFooterClasses } from "@mui/material"
 
 function PopUpCreate(props){
     const imageListRef=ref(storage,"images/")
@@ -15,9 +15,21 @@ function PopUpCreate(props){
         uploadBytes(imageRef,props.imageUpload).then((snapshot)=>{
             getDownloadURL(snapshot.ref).then((url)=>{
                 props.setImageList(url)
+                uploadReel(url)
             })
             alert("Image uploaded !!")
+            
         })
+    }
+
+    const uploadReel=async(url)=>{
+        const values={name:props.user, place:"random", image:url}
+        const resp = await axios.post("http://localhost:8000/reels/upload",{
+            ...values
+         },{ withCredentials: true });
+
+         console.log(resp)
+         props.setFLag(false)
     }
 
     // useEffect(()=>{
@@ -51,14 +63,17 @@ function PopUpCreate(props){
 const mapStateToProps =(state)=>{
     return {
         imageList: state.image.imageList,
-        imageUpload: state.image.imageUpload
+        imageUpload: state.image.imageUpload,
+        user:state.auth.user,
+        popUp:state.popUp.popUp
     }
 }
 
 const mapDispatchToProps = (dispatch)=>{
     return {
         setImageUpload:(file)=>dispatch({type:"UPLOAD_IMAGE",upload:file}),
-        setImageList:(url)=>dispatch({type:"UPDATE_LIST",update:url})
+        setImageList:(url)=>dispatch({type:"UPDATE_LIST",update:url}),
+        setFLag:(val)=>dispatch({type:"POPUP", flag:val})
     }
 }
 

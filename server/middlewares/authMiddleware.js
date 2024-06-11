@@ -13,18 +13,6 @@ function protectRoute(req,res,next){
                     next() 
                 }
             })
-        
-        // if(isVerified){
-        //     console.log("Tu chahiye")
-        //     res.json({status:true})
-        //     next()
-        // }else{
-        //     console.log("Tu nahi chahiye bhai...")
-        //     res.status(400).json({status:false})
-        //     next()
-        // }
-
-
     }
 }
 

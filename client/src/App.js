@@ -1,4 +1,3 @@
-import './App.css';
 import Header from './Components/Header';
 import Feeds from './Components/Feeds';
 import Features from './Components/Features';
@@ -20,40 +19,45 @@ function App(props) {
       if(!cookies.login){
         navigate("/login")
       }else{
-        console.log("here")
         const {data}=await axios.post("http://localhost:8000",{},{withCredentials:true})  
-        console.log("Inside App error-->",data) 
         if(!data.status){
           removeCookie("login")
           navigate("/login")
         }
-        console.log("ok")
       }
     }
     
     verifyUser()
   },[cookies,navigate])
 
-  return(
+  
+  return (
     <div>
-      <Feeds />
+      <h1>Hi {props.user}</h1>
+      {props.popUp===false?(
+        <div>
+          <Header />
+          <Features />
+          <div className='flex justify-center'>
+            <Feeds />
+          </div>
+        </div>
+    ):(<PopUpCreateClose />)}
     </div>
-)
-  // return (
-  //   <div>
-  //     {props.popUp===false?(<div>
-  //       <Header />
-  //       <Features />
-  //       <div className='flex justify-center'>
-  //         <Feeds />
-  //       </div>
-  //     </div>):(<PopUpCreateClose />)}
-  //   </div>
-  // );
+  );
 }
 
 const mapStateToProps=(state)=>{
-  return {popUp:state.popUp.popUp}
+  return {
+    popUp:state.popUp.popUp,
+    user:state.auth.user
+  }
 }
+
+// const mapStateToProps = (state) =>{
+//   return {
+//       auth:state.auth.user
+//   }
+// }
 
 export default connect(mapStateToProps)(App);
