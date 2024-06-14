@@ -19,18 +19,16 @@ function App(props) {
       if(!cookies.login){
         navigate("/login")
       }else{
-        const {data}=await axios.post("http://localhost:8000",{},{withCredentials:true})  
+        const {data}=await axios.post("http://localhost:8000/",{},{withCredentials:true})  
         if(!data.status){
           removeCookie("login")
           navigate("/login")
         }
       }
-    }
-    
+    }    
     verifyUser()
-  },[cookies,navigate])
+  },[])
 
-  
   return (
     <div>
       <h1>Hi {props.user}</h1>

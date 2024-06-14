@@ -4,22 +4,23 @@ import {connect} from "react-redux"
 import axios from "axios"
 
 function Feeds(props){
-    let Feeds=props.feeds
+    console.log("here feeds-->", props.feeds)
     useEffect(() =>{
+        const getReels=async()=>{
+            const reels=await axios.get("http://localhost:8000/reels/get-reels")
+            console.log(reels)
+            props.setFeeds(reels.data.reels)
+        }
         getReels()
     },[])
 
-    const getReels=async()=>{
-        const reels=await axios.get("http://localhost:8000/reels/get-reels")
-        console.log(reels.data.reels)
-        props.setFeeds(reels.data.reels)
-    }
 
     return (
         <div>
             <p className="text-6xl">Feeds</p>
             {props.feeds.map(feed=>{
                 return (<Feed
+                            feedID={feed._id}
                             image={feed.image} 
                             name={feed.name}
                             place={feed.place}

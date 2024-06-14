@@ -18,7 +18,6 @@ function PopUpCreate(props){
                 uploadReel(url)
             })
             alert("Image uploaded !!")
-            
         })
     }
 

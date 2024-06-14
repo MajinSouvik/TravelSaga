@@ -3,6 +3,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const authRoutes=require("./routes/authRoute")
 const reelRoutes=require("./routes/reelRoutes")
+const commentRoutes=require("./routes/commentRoutes")
 const cookieParser = require("cookie-parser");
 const {DB_LINK}=require("./credentials")
 
@@ -22,9 +23,9 @@ app.use(
 app.use(express.json())
 app.use(cookieParser());
 
-
 app.use("/",authRoutes)
 app.use("/reels",reelRoutes)
+app.use("/comments",commentRoutes)
 
 app.listen(8000, (err) => {
     if (err) {

@@ -1,4 +1,5 @@
 const mongoose = require("mongoose")
+const {ObjectId}=mongoose.Schema.Types
 
 const reelSchema=new mongoose.Schema({
     name:{
@@ -8,17 +9,17 @@ const reelSchema=new mongoose.Schema({
         type:String,
         required:true
     },
-    likes:{
-        type:Number,
-        default:0
-    },
-    comments:{
-        type:[String],
-        default:[]
-    },
     image:{
         type:String,
         default:""
+    },
+    comments:[{
+        comment:{type:String},
+        postedBy:{type:ObjectId,ref:"userModel"}
+    }],
+    postedBy:{
+        type:ObjectId,
+        ref:"userModel"
     }
 })
 
