@@ -1,56 +1,80 @@
-import { useState} from "react"
-import {Link, useNavigate} from "react-router-dom"
-import axios from "axios"
+import { Box, Button, TextField, Typography } from "@mui/material";
+import { useRef } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function Register(){
-    const [values, setValues] = useState({ username: "", password: "" });
+    const history = useNavigate();
+    const usernameRef=useRef(null)
+    const passwordRef=useRef(null)
+    const confirmPasswordRef=useRef(null)
+    
+  const sendRequest = async () => {
+    const res = await axios
+      .post("http://localhost:8000/register", {
+        username: usernameRef.current.value,
+        password: passwordRef.current.value
+      })
+      .catch((err) => console.log(err));
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            const data = await axios.post("http://localhost:8000/register",{
-               ...values
-            });
-            console.log("Registered data",data)
-        } catch (err) {
-          console.log(err);
-        }
-      };
+    const data = await res.data;
+    return data;
+  };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    sendRequest().then(() => history("/login"));
+  };
 
-    return(
+  return (
     <div>
-        <form onSubmit={(e)=>handleSubmit(e)}>
-            <div>
-                <label htmlFor="username">Username</label>
-                <input
-                    type="text"
-                    name="username"
-                    placeholder="Username"
-                    onChange={(e) =>
-                    setValues({ ...values, [e.target.name]: e.target.value })
-                    }
-                />
-            </div>
+      <form onSubmit={(e)=>handleSubmit(e)}>
+        <Box
+          marginLeft="auto"
+          marginRight="auto"
+          width={300}
+          display="flex"
+          flexDirection={"column"}
+          justifyContent="center"
+          alignItems="center"
+        >
 
-            <div>
-                <label htmlFor="password">Password</label>
-                <input
-                    type="password"
-                    placeholder="Password"
-                    name="password"
-                    onChange={(e) =>
-                    setValues({ ...values, [e.target.name]: e.target.value })
-                    }
-                />
-            </div>
-            <div>
-                Already registered? <Link to="/login">Login</Link>
-            </div>
-            <button type="submit">Submit</button>
-        </form>
+          <Typography variant="h2">Signup</Typography>
+          
+          <TextField
+            name="username"
+            inputRef={usernameRef}
+            variant="outlined"
+            placeholder="Username"
+            margin="normal"
+          />
+
+          <TextField
+            name="password"
+            inputRef={passwordRef}
+            type="password"
+            variant="outlined"
+            placeholder="Password"
+            margin="normal"
+          />
+
+        <TextField
+            name="confirmPassword"
+            inputRef={confirmPasswordRef}
+            type="password"
+            variant="outlined"
+            placeholder="Confirm Password"
+            margin="normal"
+          />
+
+          <Button variant="contained" type="submit">
+            Signup
+          </Button>
+
+        </Box>
+      </form>
     </div>
-    )
+  );
 }
 
 export default Register

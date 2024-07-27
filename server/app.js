@@ -3,6 +3,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const authRoutes=require("./routes/authRoute")
 const reelRoutes=require("./routes/reelRoutes")
+const userRoutes=require("./routes/userRoutes")
 const commentRoutes=require("./routes/commentRoutes")
 const cookieParser = require("cookie-parser");
 const {DB_LINK}=require("./credentials")
@@ -26,6 +27,7 @@ app.use(cookieParser());
 app.use("/",authRoutes)
 app.use("/reels",reelRoutes)
 app.use("/comments",commentRoutes)
+app.use("/user",userRoutes)
 
 app.listen(8000, (err) => {
     if (err) {

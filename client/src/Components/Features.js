@@ -1,16 +1,22 @@
-import {connect} from "react-redux"
+import {useState} from "react"
+import PopUpCreateClose from "./PopUpCreateClose"
 
 function Features(props){
+    const [showModal, setShowModal]=useState(false)
+
     return (
-        <button onClick={()=>props.setFLag(!props.flag)} type="button" class="px-3 py-2 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Create</button>
+        <div className="flex flex-col place-self-start space-y-12 text-2xl mt-10">
+            <button>Home</button>
+            <button onClick={()=>setShowModal(true)}>Create</button>
+            <button>Messenger</button>
+            <button>Search</button>
+            <button>ExploreX</button>
+            <button>Shorts</button>
+            <button>Notifications</button>
+            {showModal && <PopUpCreateClose onClose={()=>setShowModal(false)} />}
+        </div>
     )
 }
 
-const mapStateToProps=(state)=>{
-    return {flag:state.popUp.flag}
-}
 
-const mapDispatchToProps=(dispatch)=>{
-    return {setFLag:(val)=>dispatch({type:"POPUP", flag:val})}
-}
-export default connect(mapStateToProps,mapDispatchToProps)(Features)
+export default Features

@@ -10,7 +10,7 @@ module.exports.normalFunc=async(req,res)=>{
 
 module.exports.register=async(req,res)=>{
     try{
-        console.log("here in register auth");
+        console.log("here in register auth",req.body);
         const {username,password}=req.body
         const confirmPassword=password
 

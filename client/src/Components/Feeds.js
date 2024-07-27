@@ -4,11 +4,9 @@ import {connect} from "react-redux"
 import axios from "axios"
 
 function Feeds(props){
-    console.log("here feeds-->", props.feeds)
     useEffect(() =>{
         const getReels=async()=>{
             const reels=await axios.get("http://localhost:8000/reels/get-reels")
-            console.log(reels)
             props.setFeeds(reels.data.reels)
         }
         getReels()
@@ -16,8 +14,8 @@ function Feeds(props){
 
 
     return (
-        <div>
-            <p className="text-6xl">Feeds</p>
+        <div className="flex flex-col justify-center items-center ">
+            <p className="text-4xl">Feeds</p>
             {props.feeds.map(feed=>{
                 return (<Feed
                             feedID={feed._id}

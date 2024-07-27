@@ -1,56 +1,45 @@
-import Header from './Components/Header';
-import Feeds from './Components/Feeds';
-import Features from './Components/Features';
-import { connect } from "react-redux"
-import PopUpCreateClose from './Components/PopUpCreateClose';
-import Register from './Components/Register';
-import Login from './Components/Login';
-import {useCookies} from "react-cookie"
-import {useNavigate} from "react-router-dom"
-import { useEffect } from 'react';
-import axios from 'axios';
+
 
 function App(props) {
-  const [cookies,removeCookie] = useCookies([]);
-  const navigate=useNavigate()
+  // const [cookies,removeCookie] = useCookies([]);
+  // const navigate=useNavigate()
 
-  useEffect(() =>{
-    const verifyUser=async()=>{
-      if(!cookies.login){
-        navigate("/login")
-      }else{
-        const {data}=await axios.post("http://localhost:8000/",{},{withCredentials:true})  
-        if(!data.status){
-          removeCookie("login")
-          navigate("/login")
-        }
-      }
-    }    
-    verifyUser()
-  },[])
+  // useEffect(() =>{
+  //   const verifyUser=async()=>{
+  //     if(!cookies.login){
+  //       navigate("/login")
+  //     }else{
+  //       const {data}=await axios.post("http://localhost:8000/",{},{withCredentials:true})  
+  //       if(!data.status){
+  //         removeCookie("login")
+  //         navigate("/login")
+  //       }
+  //     }
+  //   }    
+  //   verifyUser()
+  // },[])
 
   return (
-    <div>
-      <h1>Hi {props.user}</h1>
-      {props.popUp===false?(
-        <div>
-          <Header />
-          <Features />
-          <div className='flex justify-center'>
-            <Feeds />
-          </div>
-        </div>
-    ):(<PopUpCreateClose />)}
+    <div className='flex justify-between'>
+      <div className='flex flex-col'>
+        <h1>Hi </h1>
+        <h1 className='text-4xl mt-4'>TravelSaga</h1>
+        {/* <Features /> */}
+      </div>
+
+      {/* <Feeds /> */}
+      {/* <SlideSearch /> */}
+      <h1>G</h1>
     </div>
   );
 }
 
-const mapStateToProps=(state)=>{
-  return {
-    popUp:state.popUp.popUp,
-    user:state.auth.user
-  }
-}
+// const mapStateToProps=(state)=>{
+//   return {
+//     popUp:state.popUp.popUp,
+//     user:state.auth.user
+//   }
+// }
 
 // const mapStateToProps = (state) =>{
 //   return {
@@ -58,4 +47,4 @@ const mapStateToProps=(state)=>{
 //   }
 // }
 
-export default connect(mapStateToProps)(App);
+export default App;
