@@ -1,10 +1,10 @@
 const {uploadReel, getReels,getReel}=require("../controllers/reelController")
-const protectRoute = require("../middlewares/authMiddleware")
+const {verifyToken} = require("../middlewares/authMiddleware")
 const router=require("express").Router()
 
 
-router.post("/upload",protectRoute,uploadReel)
-router.get("/get-reels",getReels)
-router.get("/get-reel",getReel)
+router.post("/upload",verifyToken,uploadReel)
+router.get("/get-reels",verifyToken,getReels)
+router.get("/get-reel",verifyToken,getReel)
 
 module.exports = router

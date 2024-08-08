@@ -1,50 +1,65 @@
+import {useState, useEffect} from "react";
+import {useSelector} from "react-redux"
+import Features from "./Components/Features"
+import Feeds from "./Components/Feeds"
+import SlideSearch from "./Components/SlideSearch"
+import axios from "axios"
+axios.defaults.withCredentials = true;
 
+let firstRender=true
 
-function App(props) {
-  // const [cookies,removeCookie] = useCookies([]);
-  // const navigate=useNavigate()
+function App() {
+    const [user, setUser]=useState(null)
+    
+    const sendRequest = async()=>{
+        const resp=await axios.get("http://localhost:8000/user",{
+            withCredentials: true
+        }).catch(err=>console.log(err))
 
-  // useEffect(() =>{
-  //   const verifyUser=async()=>{
-  //     if(!cookies.login){
-  //       navigate("/login")
-  //     }else{
-  //       const {data}=await axios.post("http://localhost:8000/",{},{withCredentials:true})  
-  //       if(!data.status){
-  //         removeCookie("login")
-  //         navigate("/login")
-  //       }
-  //     }
-  //   }    
-  //   verifyUser()
-  // },[])
+        const data=resp.data
+        return data
+    }
+
+    const refreshToken=async()=>{
+        const resp=await axios.get("http://localhost:8000/refresh",{
+            withCredentials: true
+        }).catch(err=>console.log(err))
+
+        const data=resp.data
+        return data
+    }
+
+    useEffect(()=>{
+      if(firstRender){
+        firstRender=false
+        sendRequest().then((data)=>{
+          setUser(data)
+        })
+      }
+
+      let interval = setInterval(() => {
+        refreshToken().then((data) =>{ 
+          setUser(data)
+          })
+        }, 1000 * 29);
+        return () => clearInterval(interval);
+        },[])
 
   return (
-    <div className='flex justify-between'>
-      <div className='flex flex-col'>
-        <h1>Hi </h1>
-        <h1 className='text-4xl mt-4'>TravelSaga</h1>
-        {/* <Features /> */}
-      </div>
+    <div>
+      {user && <div className='flex justify-between'>
+        <div className='flex flex-col'>
+          <h1>Hi </h1>
+          <h1 className='text-4xl mt-4'>TravelSaga</h1>
+          <Features />
+        </div>
 
-      {/* <Feeds /> */}
-      {/* <SlideSearch /> */}
-      <h1>G</h1>
+        <Feeds />
+        <SlideSearch />
+        <h1>G</h1>
+      </div>}
     </div>
   );
 }
-
-// const mapStateToProps=(state)=>{
-//   return {
-//     popUp:state.popUp.popUp,
-//     user:state.auth.user
-//   }
-// }
-
-// const mapStateToProps = (state) =>{
-//   return {
-//       auth:state.auth.user
-//   }
-// }
 
 export default App;

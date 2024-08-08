@@ -22,6 +22,7 @@ module.exports.register=async(req,res)=>{
 }
 
 module.exports.login=async(req,res)=>{
+    console.log("here inside login")
     try{
         const {username,password}=req.body;
         const user=await User.findOne({username})
@@ -29,9 +30,13 @@ module.exports.login=async(req,res)=>{
             const auth=await bcrypt.compare(password, user.password)
             if(auth){
                 let uid=user['_id']
-                let signature=jwt.sign({payload:uid}, secret_key, {expiresIn:maxAge})
-                res.cookie("login",signature,{ httpOnly: false, maxAge: maxAge * 1000 })
-                return res.status(200).json({status:true})
+                let signature=jwt.sign({payload:uid}, secret_key, {expiresIn:"35s"})
+                console.log("token-->",signature)
+                if(req.cookies["login"]){
+                    req.cookies["login"]=""
+                }
+                res.cookie("login",signature,{ httpOnly: false, maxAge: new Date(Date.now() + 1000 * 30) })
+                return res.status(200).json({status:true, user, signature})
             }else{
                 const error="Incorrect Password!!"
                 return res.status(404).json({error, status:false})
@@ -42,6 +47,7 @@ module.exports.login=async(req,res)=>{
         }
         return res.status(200).json({status:true})
     }catch(err){
+        console.log("**",err)
         return res.status(404).json({err, status:false})
     }
 }

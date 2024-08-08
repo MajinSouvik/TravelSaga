@@ -1,19 +1,40 @@
-import { Routes, Route, BrowserRouter } from "react-router-dom";
+import {createBrowserRouter,RouterProvider} from "react-router-dom"
 import App from "./App"
-import Login from "./Components/Login";
-import Login2 from "./Components/Login2";
-import Register from "./Components/Register";
+import Register from "./Components/Register"
+import Login from "./Components/Login"
+import Body from "./Components/Body"
+import {useSelector} from "react-redux"
 
 function AppRouter(){
+    const isLoggedIn=useSelector((store)=>store.auth.isLoggedIn)
+  
+    const routes=createBrowserRouter([
+      {
+        path:"/",
+        element:<Body />
+      },
+
+      {
+        path:"/signup",
+        element:<Register />
+      },
+    
+      {
+        path:"/login",
+        element:<Login />
+      },
+    
+      isLoggedIn && {
+        path:"/app",
+        element:<App />
+      }
+    ])
+
     return(
-        <BrowserRouter>
-            <Routes>
-                <Route path="/" element={<App />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/login" element={<Login2 />} />
-            </Routes>
-        </BrowserRouter>
+        <RouterProvider router={routes} />
     )
 }
+
+
 
 export default AppRouter

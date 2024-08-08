@@ -1,77 +1,77 @@
-import { useState, useEffect} from "react"
-import axios from "axios"
-import {useNavigate} from "react-router-dom"
-import {useCookies} from "react-cookie"
-import {connect} from "react-redux"
+import { Box, Button, TextField, Typography } from "@mui/material";
+import axios from "axios";
+import { useRef } from "react";
+import { useDispatch} from "react-redux";
+import { useNavigate } from "react-router-dom";
+import {login} from "../redux/authSlice"
 
-function Login(props){
-    const navigate=useNavigate()
-    const [cookies]=useCookies([])
-    const [values, setValues] = useState({ username: "", password: "" });
+function Login(){
+  const dispatch = useDispatch(); 
+  const history = useNavigate();
 
-    useEffect(()=>{
-        if(cookies.login){
-            navigate("/")
-        }
-    },[cookies, navigate])  
+  const usernameRef=useRef(null)
+  const passwordRef=useRef(null)
+  
+  const sendRequest = async () => {
+    const res = await axios
+      .post("http://localhost:8000/login", {
+        username: usernameRef.current.value,
+        password: passwordRef.current.value,
+      })
+      .catch((err) => console.log(err));
 
+    const data = await res.data;
+    localStorage.setItem('token',data.signature)
+    console.log("login-details-->**",data)
+    return data;
+  };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            const resp = await axios.post("http://localhost:8000/login",{
-               ...values
-            },{ withCredentials: true });
-            if(resp.data.status){
-                props.setUser(values.username)
-                navigate("/")
-            }
-        } catch (err) {
-          console.log(err);
-        }
-      };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // send http request
+    sendRequest()
+        .then(() =>dispatch(login()))
+        .then(() => history("/app"));
+  };
 
-
-    return(
+  return (
     <div>
-        <form onSubmit={(e)=>handleSubmit(e)}>
-            <div>
-                <label htmlFor="username">Username</label>
-                <input
-                    type="text"
-                    name="username"
-                    placeholder="Username"
-                    onChange={(e) =>
-                    setValues({ ...values, [e.target.name]: e.target.value })
-                    }
-                />
-            </div>
+      <form onSubmit={(e)=>handleSubmit(e)}>
+        <Box
+          marginLeft="auto"
+          marginRight="auto"
+          width={300}
+          display="flex"
+          flexDirection={"column"}
+          justifyContent="center"
+          alignItems="center"
+        >
+            <Typography variant="h2">Login</Typography>
 
-            <div>
-                <label htmlFor="password">Password</label>
-                <input
-                    type="password"
-                    placeholder="Password"
-                    name="password"
-                    onChange={(e) =>
-                    setValues({ ...values, [e.target.name]: e.target.value })
-                    }
-                />
-            </div>
-            <button type="submit">Submit</button>
-        </form>
+            <TextField
+                name="username"
+                inputRef={usernameRef}
+                variant="outlined"
+                placeholder="Username"
+                margin="normal"
+            />
+
+            <TextField
+                name="password"
+                inputRef={passwordRef}
+                type="password"
+                variant="outlined"
+                placeholder="Password"
+                margin="normal"
+            />
+
+            <Button variant="contained" type="submit">
+                Login
+            </Button>
+        </Box>
+      </form>
     </div>
-    )
-}
+  );
+};
 
-const mapStateToProps = (state) =>{
-    return {
-        auth:state.auth.user
-    }
-}
-
-const mapDispatchToProps = (dispatch) =>{
-    return {setUser:(user)=>dispatch({type:"SET_USER", payload:user})}
-}
-
-export default connect(mapStateToProps,mapDispatchToProps)(Login)
+export default Login;

@@ -1,22 +1,27 @@
 import Feed from "./Feed"
 import {useEffect} from "react"
-import {connect} from "react-redux"
+import {useSelector, useDispatch} from "react-redux"
+import {setFeed} from "../redux/feedSlice"
 import axios from "axios"
+axios.defaults.withCredentials = true;
 
-function Feeds(props){
+function Feeds(){
+    const dispatch=useDispatch()
+    const feeds=useSelector((store)=>store.feed.feeds)
+    
     useEffect(() =>{
         const getReels=async()=>{
             const reels=await axios.get("http://localhost:8000/reels/get-reels")
-            props.setFeeds(reels.data.reels)
+            dispatch(setFeed(reels.data.reels))
         }
         getReels()
     },[])
 
 
     return (
-        <div className="flex flex-col justify-center items-center ">
+        <div className="flex flex-col justify-center items-center">
             <p className="text-4xl">Feeds</p>
-            {props.feeds.map(feed=>{
+            {feeds.map(feed=>{
                 return (<Feed
                             feedID={feed._id}
                             image={feed.image} 
@@ -28,12 +33,4 @@ function Feeds(props){
     )
 }
 
-const mapStateToProps=(state)=>{
-    return {feeds:state.feeds.feeds}
-}
-
-const mapDispatchToProps=(dispatch)=>{
-    return {setFeeds:(reels)=>dispatch({type:"SET_FEED", payload:reels})}
-}
-
-export default connect(mapStateToProps,mapDispatchToProps)(Feeds)
+export default Feeds
