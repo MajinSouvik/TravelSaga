@@ -1,8 +1,6 @@
-import {useEffect} from "react"
 import {storage} from "../firebase"
 import {ref, uploadBytes, listAll, getDownloadURL} from "firebase/storage"
 import {v4} from "uuid"
-// import { connect } from "react-redux"
 import axios from "axios"
 import { tableFooterClasses } from "@mui/material"
 import {useSelector, useDispatch} from "react-redux"
@@ -13,13 +11,10 @@ axios.defaults.withCredentials = true;
 
 function PopUpCreate(props){
     const dispatch=useDispatch()
-
+    const user=useSelector((store)=>store.user.user)
     const imageList=useSelector((store)=>store.image.imageList)
     const imageUpload=useSelector((store)=>store.image.imageUpload)
-    // const user=useSelector((store)=>store.image.imageUpload)
-    const user="souvik"
     const popUp=useSelector((store)=>store.popUp.popUp)
-
     const imageListRef=ref(storage,"images/")
 
     const uploadImage=()=>{
@@ -36,18 +31,14 @@ function PopUpCreate(props){
     }
 
     const uploadReel=async(url)=>{
-        const values={name:props.user, place:"random", image:url}
+        const values={name:user.username,  place:"Dubai",  image:url}
         const resp = await axios.post("http://localhost:8000/reels/upload",{
             ...values
-         }
-         
-        //  { withCredentials: true }
-        
+         }        
         );
 
          console.log(resp)
          dispatch(setPopUp(false))
-        //  props.setFLag(false)
     }
 
     // useEffect(()=>{
@@ -77,22 +68,5 @@ function PopUpCreate(props){
         </div>
     )
 }
-
-// const mapStateToProps =(state)=>{
-//     return {
-//         imageList: state.image.imageList,
-//         imageUpload: state.image.imageUpload,
-//         user:state.auth.user,
-//         popUp:state.popUp.popUp
-//     }
-// }
-
-// const mapDispatchToProps = (dispatch)=>{
-//     return {
-//         setImageUpload:(file)=>dispatch({type:"UPLOAD_IMAGE",upload:file}),
-//         setImageList:(url)=>dispatch({type:"UPDATE_LIST",update:url}),
-//         setFLag:(val)=>dispatch({type:"POPUP", flag:val})
-//     }
-// }
 
 export default PopUpCreate

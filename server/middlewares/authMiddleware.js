@@ -33,24 +33,19 @@ module.exports.protectRoute=(req,res,next)=>{
 
 
 module.exports.verifyToken=(req,res,next)=>{
-    console.log("Inside VerifyTOken....")
     try{
         if(req.cookies.login){
             jwt.verify(req.cookies.login, secret_key,
                 (err,decodeToken)=>{
                     if(err){
-                        console.log(req.cookies.login)
-                        console.log("agei error-->",err)
                         return res.json({status:false})
                     }
                     const userId=decodeToken.payload
                     
                     req.id=userId
-                    console.log("At this point..")
                     next()
                     })
                 }else{
-                    console.log("Error invalid cookie!!")
                     return res.status(400).json({message:"Invalid cookie!!",status:false})
         }  
     }catch(err){

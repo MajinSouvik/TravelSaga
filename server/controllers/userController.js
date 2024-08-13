@@ -1,8 +1,6 @@
 const User=require("../models/authModel")
 
 module.exports.getUser=async(req,res)=>{
-    console.log("Inside getUser controller..");
-    
     try{
         let user=await User.findById(req.id)
         return res.status(200).json(user)

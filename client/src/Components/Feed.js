@@ -21,7 +21,7 @@ function Feed(props){
     }
 
     const getReel=async()=>{
-        const resp=await axios.get("http://localhost:8000/reels/get-reel",
+        const resp=await axios.get("http://localhost:8000/posts/get-post/",
             {"params":{"ID":props.feedID}
         })
         setReel(resp.data.reel)

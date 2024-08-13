@@ -10,25 +10,25 @@ function Feeds(){
     const feeds=useSelector((store)=>store.feed.feeds)
     
     useEffect(() =>{
-        const getReels=async()=>{
-            const reels=await axios.get("http://localhost:8000/reels/get-reels")
-            dispatch(setFeed(reels.data.reels))
+        const getPosts=async()=>{
+            const posts=await axios.get("http://localhost:8000/posts/get-posts")
+            dispatch(setFeed(posts.data.posts))
         }
-        getReels()
+        getPosts()
     },[])
 
 
     return (
         <div className="flex flex-col justify-center items-center">
             <p className="text-4xl">Feeds</p>
-            {feeds.map(feed=>{
+            {/* {feeds.length!==0 && feeds.map(feed=>{
                 return (<Feed
                             feedID={feed._id}
                             image={feed.image} 
                             name={feed.name}
                             place={feed.place}
                         />)
-            })}
+            })} */}
         </div>
     )
 }
