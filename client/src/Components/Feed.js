@@ -6,6 +6,7 @@ import { addComment } from '../redux/commentSlice';
 import axios from "axios"
 import Post from './Post';
 import {useState} from "react"
+import Slide from './Slide';
 axios.defaults.withCredentials = true;
 
 function Feed(props){
@@ -32,7 +33,9 @@ function Feed(props){
         <div className='my-6'>
             <div>
                 <p>{props.name}</p>
-                <img src={props.image}/>   
+                {/* <img src={props.image}/>    */}
+                <p>{props.desc}</p>
+                <Slide media={props.content} />
                 <p>{props.place}</p>
             </div>
 

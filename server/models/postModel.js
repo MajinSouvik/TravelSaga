@@ -1,19 +1,6 @@
 const mongoose = require("mongoose")
 const {ObjectId}=mongoose.Schema.Types
 
-const fileSchema=new mongoose.Schema({
-    // name:{
-    //     type:String,
-    //     required:true
-    // },
-
-    url:{
-        type:String,
-        required:true
-    }
-})
-
-
 const postSchema=new mongoose.Schema({
     name:{
         type:String,
@@ -27,14 +14,13 @@ const postSchema=new mongoose.Schema({
         type:String,
         default:""
     },
-    // image:{
-    //     type:String,
-    //     default:""
-    // },
-    files:[fileSchema],
-
+    
+    files:[{
+        type:Object,
+        required:true
+    }],
     comments:[{
-        comment:{type:String},
+        comment: {type:String},
         postedBy:{type:ObjectId, ref:"userModel"}
     }],
     postedBy:{

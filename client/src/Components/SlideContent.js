@@ -1,67 +1,81 @@
-import {useState, useEffect} from "react"
+import { useState, useEffect } from "react";
+import Slide from "./Slide"
 
-function SlideContent({files}){
-    const [images, setImages]=useState([])
-    const [currentIndex, setCurrentIndex] = useState(0);
-
-    const handleNext = () => {
-        if (currentIndex < images.length - 1) {
-          setCurrentIndex(currentIndex + 1);
-        }
-      };
+function SlideContent({ files }) {
+    const [media, setMedia] = useState([]);
     
-      const handlePrev = () => {
-        if (currentIndex > 0) {
-          setCurrentIndex(currentIndex - 1);
-        }
-      };
 
+    // const handleNext = () => {
+    //     if (currentIndex < media.length - 1) {
+    //         setCurrentIndex(currentIndex + 1);
+    //     }
+    // };
 
-    const helper=()=>{
-        const filesArray=Array.from(files)
-        const imagesArray=[]
+    // const handlePrev = () => {
+    //     if (currentIndex > 0) {
+    //         setCurrentIndex(currentIndex - 1);
+    //     }
+    // };
 
-        filesArray.forEach((file)=>{
-            const reader=new FileReader()
-            reader.readAsDataURL(file)
+    const loadMedia = () => {
+        const filesArray = Array.from(files);
+        const mediaArray = [];
+
+        filesArray.forEach((file) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
 
             reader.onload = () => {
-                imagesArray.push(reader.result);
-        
-                if (imagesArray.length === filesArray.length) {
-                setImages(imagesArray);
+                mediaArray.push({
+                    type: file.type.startsWith('image/') ? 'image' : 'video',
+                    url: reader.result,
+                });
+
+                if (mediaArray.length === filesArray.length) {
+                    setMedia(mediaArray);
                 }
             };
-        })
-    }
+        });
+    };
 
     useEffect(() => {
-        helper()
-    },[files])
+        loadMedia();
+    }, [files]);
 
     return (
-        <div>
-      {images.length > 0 && (
-        <div>
-          <button onClick={handlePrev} disabled={currentIndex === 0}>
-            {"<"}
-          </button>
-          <img
-            src={images[currentIndex]}
-            alt="Uploaded"
-            style={{ width: "200px", height: "auto", margin: "10px" }}
-          />
-          <button
-            onClick={handleNext}
-            disabled={currentIndex === images.length - 1}
-          >
-            {">"}
-          </button>
-        </div>
-      )}
-    </div>
-        
-    )
+      <Slide media={media} />
+        // <div>
+        //     {media.length > 0 && (
+        //         <div>
+        //             <button onClick={handlePrev} disabled={currentIndex === 0}>
+        //                 {"<"}
+        //             </button>
+        //             {media[currentIndex].type === 'image' ? (
+        //                 <img
+        //                     src={media[currentIndex].url}
+        //                     alt="Uploaded"
+        //                     className="w-[45%] aspect-[3/2] object-contain"
+        //                 />
+        //             ) : (
+        //                 <video
+        //                     autoPlay
+        //                     loop
+        //                     className="w-[45%] aspect-[3/2] object-contain"
+        //                 >
+        //                     <source src={media[currentIndex].url} type="video/mp4" />
+        //                     Your browser does not support the video tag.
+        //                 </video>
+        //             )}
+        //             <button
+        //                 onClick={handleNext}
+        //                 disabled={currentIndex === media.length - 1}
+        //             >
+        //                 {">"}
+        //             </button>
+        //         </div>
+        //     )}
+        // </div>
+    );
 }
 
-export default SlideContent
+export default SlideContent;

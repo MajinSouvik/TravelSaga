@@ -12,6 +12,7 @@ function Feeds(){
     useEffect(() =>{
         const getPosts=async()=>{
             const posts=await axios.get("http://localhost:8000/posts/get-posts")
+            console.log("posts in feeds-->", posts)
             dispatch(setFeed(posts.data.posts))
         }
         getPosts()
@@ -21,14 +22,15 @@ function Feeds(){
     return (
         <div className="flex flex-col justify-center items-center">
             <p className="text-4xl">Feeds</p>
-            {/* {feeds.length!==0 && feeds.map(feed=>{
+            {feeds.length!==0 && feeds.map(feed=>{
                 return (<Feed
                             feedID={feed._id}
-                            image={feed.image} 
+                            content={feed.files} 
                             name={feed.name}
                             place={feed.place}
+                            desc={feed.description}
                         />)
-            })} */}
+            })}
         </div>
     )
 }
