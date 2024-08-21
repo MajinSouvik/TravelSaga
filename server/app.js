@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const authRoutes=require("./routes/authRoute")
-// const reelRoutes=require("./routes/postRoutes")
+const reelRoutes=require("./routes/reelRoutes")
 const postRoutes=require("./routes/postRoutes")
 const userRoutes=require("./routes/userRoutes")
 const commentRoutes=require("./routes/commentRoutes")
@@ -25,11 +25,11 @@ app.use(
 app.use(express.json())
 app.use(cookieParser());
 
-app.use("/",authRoutes)
-app.use("/posts",postRoutes)
-// app.use("/reels",reelRoutes)
-app.use("/comments",commentRoutes)
-app.use("/user",userRoutes)
+app.use("/", authRoutes)
+app.use("/posts", postRoutes)
+app.use("/reels",reelRoutes)
+app.use("/comments", commentRoutes)
+app.use("/user", userRoutes)
 
 app.listen(8000, (err) => {
     if (err) {

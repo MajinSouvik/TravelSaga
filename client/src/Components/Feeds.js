@@ -1,4 +1,4 @@
-import Feed from "./Feed"
+import Feed3 from "./Feed3"
 import {useEffect} from "react"
 import {useSelector, useDispatch} from "react-redux"
 import {setFeed} from "../redux/feedSlice"
@@ -10,6 +10,7 @@ function Feeds(){
     const feeds=useSelector((store)=>store.feed.feeds)
     
     useEffect(() =>{
+        console.log("posts called !!")
         const getPosts=async()=>{
             const posts=await axios.get("http://localhost:8000/posts/get-posts")
             console.log("posts in feeds-->", posts)
@@ -23,7 +24,7 @@ function Feeds(){
         <div className="flex flex-col justify-center items-center">
             <p className="text-4xl">Feeds</p>
             {feeds.length!==0 && feeds.map(feed=>{
-                return (<Feed
+                return (<Feed3
                             feedID={feed._id}
                             content={feed.files} 
                             name={feed.name}

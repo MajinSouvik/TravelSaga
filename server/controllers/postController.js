@@ -3,15 +3,10 @@ const User=require("../models/authModel")
 
 module.exports.uploadPost=async(req,res)=>{
     try{
-        // {  name: user.username,  
-        //     place:"Dubai", 
-        //     description:"My first post!!", 
-        //     files:finalFiles
-        // }
         const {name, place, description, files}=req.body
         let user=await User.findById(req.id)
         const postedBy=user
-        const post=await Post.create({name, place,description, files})
+        const post=await Post.create({name, place,description, files, postedBy})
         return res.status(200).json({post, status:true})
     }catch(err){
         console.log("Error in upload-->", err)

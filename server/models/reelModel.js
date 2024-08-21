@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 const {ObjectId}=mongoose.Schema.Types
 
-const postSchema=new mongoose.Schema({
+const reelSchema=new mongoose.Schema({
     name:{
         type:String,
     },
@@ -11,16 +11,11 @@ const postSchema=new mongoose.Schema({
         required:true
     },
 
-    description:{
-        type:String,
-        default:""
+    url:{
+            type:Object,
+            required:true
     },
-    
-    files:[{
-        type:Object,
-        required:true
-    }],
-    
+
     comments:[{
         comment: {type:String},
         postedBy:{type:ObjectId, ref:"userModel"}
@@ -32,5 +27,5 @@ const postSchema=new mongoose.Schema({
     }
 })
 
-const postModel=mongoose.model('postModel',postSchema)
-module.exports=postModel
+const reelModel=mongoose.model('reelModel',reelSchema)
+module.exports=reelModel

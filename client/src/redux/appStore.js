@@ -5,6 +5,8 @@ import feedSlice from "./feedSlice"
 import commentSlice from "./commentSlice"
 import popUpSlice from "./popUpSlice"
 import imageSlice from "./imageSlice"
+import reelSlice from "./reelSlice"
+import feedReelSlice from "./feedReelSlice"
 
 const appStore=configureStore({
     reducer:{
@@ -13,7 +15,9 @@ const appStore=configureStore({
         feed:feedSlice,
         comments:commentSlice,
         popUp:popUpSlice,
-        image:imageSlice
+        image:imageSlice,
+        reels: reelSlice,
+        feedReel:feedReelSlice
     }
 })
 

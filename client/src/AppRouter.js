@@ -3,6 +3,7 @@ import App from "./App"
 import Register from "./Components/Register"
 import Login from "./Components/Login"
 import Body from "./Components/Body"
+import Shorts from "./Components/Shorts"
 import {useSelector} from "react-redux"
 
 function AppRouter(){
@@ -26,7 +27,13 @@ function AppRouter(){
     
       isLoggedIn && {
         path:"/app",
-        element:<App />
+        element:<App />,
+        children:[
+          {
+            path:"reels",
+            element:<Shorts />
+          }
+      ]
       }
     ])
 

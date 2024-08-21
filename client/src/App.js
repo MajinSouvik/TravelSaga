@@ -4,7 +4,9 @@ import Features from "./Components/Features"
 import Feeds from "./Components/Feeds"
 import SlideSearch from "./Components/SlideSearch"
 import axios from "axios"
+import { Outlet } from "react-router-dom";
 import {setUser} from "./redux/userSlice"
+import {setFeedReel} from "./redux/feedReelSlice"
 axios.defaults.withCredentials = true;
 
 let firstRender=true
@@ -12,6 +14,7 @@ let firstRender=true
 function App() {
     const dispatch=useDispatch()
     const user=useSelector((store)=>store.user.user)
+    const feedOrReel=useSelector((store)=>store.feedReel.feedReel)
     
     const sendRequest = async()=>{
         const resp=await axios.get("http://localhost:8000/user",{
@@ -57,7 +60,7 @@ function App() {
           <Features />
         </div>
 
-        <Feeds />
+        {feedOrReel?<Feeds />:<Outlet />}
         <SlideSearch />
         <h1>G</h1>
       </div>}

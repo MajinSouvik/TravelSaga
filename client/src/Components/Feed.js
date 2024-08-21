@@ -13,7 +13,7 @@ function Feed(props){
     const comments=useSelector((store)=>store.comments.comments)
     const dispatch=useDispatch()
     const [showModal, setShowModal]=useState(false)
-    const [reel, setReel]=useState({})
+    const [post, setPost]=useState({})
 
     const handleComment=async()=>{
         const resp = await axios.post("http://localhost:8000/comments/upload",
@@ -21,11 +21,12 @@ function Feed(props){
         );
     }
 
-    const getReel=async()=>{
+    const getPost=async()=>{
         const resp=await axios.get("http://localhost:8000/posts/get-post/",
             {"params":{"ID":props.feedID}
         })
-        setReel(resp.data.reel)
+        // setReel(resp.data.post)
+        setPost(resp.data.post)
         setShowModal(true)
     }
 
@@ -33,7 +34,6 @@ function Feed(props){
         <div className='my-6'>
             <div>
                 <p>{props.name}</p>
-                {/* <img src={props.image}/>    */}
                 <p>{props.desc}</p>
                 <Slide media={props.content} />
                 <p>{props.place}</p>
@@ -41,7 +41,7 @@ function Feed(props){
 
             <div className='flex justify-between'>
                 <div className='space-x-3'>
-                    <CommentIcon onClick={()=>getReel()}/>
+                    <CommentIcon onClick={()=>getPost()}/>
                     <FavoriteBorderIcon />
                 </div>
                 
@@ -61,7 +61,7 @@ function Feed(props){
                 showModal && 
                 <Post 
                     onClose={()=>setShowModal(false)} 
-                    post={reel}
+                    post={post}
                 />
             }
         </div>
