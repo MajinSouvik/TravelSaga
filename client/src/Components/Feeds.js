@@ -1,4 +1,4 @@
-import Feed3 from "./Feed3"
+import Feed from "./Feed"
 import {useEffect} from "react"
 import {useSelector, useDispatch} from "react-redux"
 import {setFeed} from "../redux/feedSlice"
@@ -24,7 +24,7 @@ function Feeds(){
         <div className="flex flex-col justify-center items-center">
             <p className="text-4xl">Feeds</p>
             {feeds.length!==0 && feeds.map(feed=>{
-                return (<Feed3
+                return (<Feed
                             feedID={feed._id}
                             content={feed.files} 
                             name={feed.name}

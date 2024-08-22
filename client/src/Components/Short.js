@@ -1,52 +1,35 @@
-// function Short({reelID, src, name, comment}){
-//     return (
-//         <div >
-//             <p>{name}</p>
-//             <video
-//                 controls
-//                 className="w-[75%] aspect-[3/2] object-contain"
+import React, { useRef, useEffect } from 'react';
 
-//             >
-//                 <source src={src} type="video/mp4"/>
-//             </video>
-//         </div>
-//     )
-// }
+function Short({ reelID, src, name, comment, inView }) {
+  const videoRef = useRef(null);
 
-// export default Short
+  useEffect(() => {
+    if (inView) {
+      videoRef.current.play();
+    } else {
+      videoRef.current.pause();
+    }
+  }, [inView]);
 
-import { useEffect, useRef } from 'react';
-
-function Short({ reelID, src, name, comment, isActive }) {
-    const videoRef = useRef(null);
-
-    useEffect(() => {
-        if (isActive) {
-            videoRef.current.play();
-        } else {
-            videoRef.current.pause();
-        }
-    }, [isActive]);
-
-    return (
-        <div className="flex flex-col items-center justify-center w-full h-[85vh] bg-black text-white">
-            <video
-                ref={videoRef}
-                loop
-                muted
-                controls={false}
-                playsInline
-                className="w-full h-full object-contain"
-            >
-                <source src={src} type="video/mp4" />
-            </video>
-            <div className="absolute bottom-4 left-4">
-                <p className="text-lg font-semibold">{name}</p>
-                <p className="text-sm">{comment}</p>
-            </div>
-        </div>
-    );
+  return (
+    <div className="reel-container w-full max-w-[400px] h-[calc(100vh-56px)] mx-auto relative">
+      <video
+        ref={videoRef}
+        className="w-full h-full object-cover"
+        loop
+        // muted
+        playsInline
+      >
+        <source src={src} type="video/mp4" />
+      </video>
+      <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black to-transparent text-white">
+        <p className="font-bold">{name}</p>
+        <p className="text-sm">{comment}</p>
+      </div>
+    </div>
+  )
 }
 
 export default Short;
+
 
