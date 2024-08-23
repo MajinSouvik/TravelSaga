@@ -72,7 +72,7 @@ export default function Slide({
             key={index}
             ref={(el) => (slideRefs.current[index] = el)}
             className="min-w-full flex items-center justify-center"
-            style={{ aspectRatio: "1/1" }} // Enforce aspect ratio
+            style={{ aspectRatio: "9/16" }} // Enforce aspect ratio
             onClick={() => handleVideoClick(index)} // Add click handler to each slide
           >
             <div className="w-full h-full">{slide}</div>

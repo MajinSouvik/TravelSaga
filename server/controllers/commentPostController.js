@@ -1,13 +1,13 @@
 const Post=require("../models/postModel")
 
-module.exports.uploadComment=async(req,res)=>{
+module.exports.addComment=async(req,res)=>{
     try{
         const comment={
              comment: req.body.comment,
              postedBy:req.id
         }
 
-        Reel.findByIdAndUpdate(req.body.postID, {
+        Post.findByIdAndUpdate(req.body.postID, {
             $push: { comments: comment }
         }, {
             new: true
@@ -23,6 +23,19 @@ module.exports.uploadComment=async(req,res)=>{
             })
 
     }catch(err){
+        console.log("post-comment-error",err)
+        return res.status(404).json({err, status:false})
+    }
+}
+
+module.exports.getAllPostComments=async(req,res)=>{
+    try{
+        const post=await Post.findById(req.query.postID)
+        const comments=post.comments
+        console.log(comments)
+        return res.status(200).json({comments, status:true})
+    }catch(err){
+        console.log("post-comment-error",err)
         return res.status(404).json({err, status:false})
     }
 }
