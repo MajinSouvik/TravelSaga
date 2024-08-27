@@ -1,62 +1,3 @@
-// import React, { useState, useEffect } from 'react';
-// import axios from 'axios';
-
-// function ReelCommentModal({ reelId, onClose }) {
-//   const [comments, setComments] = useState([]);
-//   const [newComment, setNewComment] = useState('');
-
-//   useEffect(() => {
-//     const fetchComments = async () => {
-//       try {
-//         const response = await axios.get(`http://localhost:8000/reels/${reelId}/comments`);
-//         setComments(response.data.comments);
-//       } catch (error) {
-//         console.error("Error fetching comments:", error);
-//       }
-//     };
-
-//     fetchComments();
-//   }, [reelId]);
-
-//   const handleAddComment = async (e) => {
-//     e.preventDefault();
-//     try {
-//       await axios.post(`http://localhost:8000/reels/${reelId}/comments`, { text: newComment });
-//       setComments([...comments, { text: newComment }]);
-//       setNewComment('');
-//     } catch (error) {
-//       console.error("Error adding comment:", error);
-//     }
-//   };
-
-//   return (
-//     <div className="modal-background fixed inset-0 flex items-start justify-end bg-black bg-opacity-5">
-//       <div className="modal-content bg-white w-1/3 p-4 rounded-lg relative">
-//         <button onClick={onClose} className="absolute top-2 right-2 bg-gray-300 p-2 rounded">Close</button>
-//         <div className="comments-list max-h-80 overflow-y-scroll mb-4">
-//           {comments.map((comment, index) => (
-//             <div key={index} className="comment p-2 border-b">
-//               {comment.text}
-//             </div>
-//           ))}
-//         </div>
-//         <form onSubmit={handleAddComment} className="flex">
-//           <input
-//             type="text"
-//             value={newComment}
-//             onChange={(e) => setNewComment(e.target.value)}
-//             placeholder="Add a comment..."
-//             className="flex-grow border p-2 rounded-l-lg"
-//           />
-//           <button type="submit" className="bg-blue-500 text-white p-2 rounded-r-lg">Post</button>
-//         </form>
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default ReelCommentModal;
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
@@ -64,10 +5,13 @@ function ReelCommentModal({ reelId, onClose }) {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
 
+
   useEffect(() => {
     const fetchComments = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/reels/${reelId}/comments`);
+          const response = await axios.get("http://localhost:8000/reel-comment/all-comments", {
+          params: { reelID: reelId }
+    });
         setComments(response.data.comments);
       } catch (error) {
         console.error("Error fetching comments:", error);
@@ -75,14 +19,17 @@ function ReelCommentModal({ reelId, onClose }) {
     };
 
     fetchComments();
-  }, [reelId]);
+  }, []);
 
   const handleAddComment = async (e) => {
     e.preventDefault();
     if (newComment.trim()) {
       try {
-        await axios.post(`http://localhost:8000/reels/${reelId}/comments`, { text: newComment });
-        setComments([...comments, { text: newComment }]);
+        const resp = await axios.post("http://localhost:8000/reel-comment/add",
+          {"comment":newComment, 
+          "reelID":reelId})
+
+        setComments(resp.data.comments);
         setNewComment('');
       } catch (error) {
         console.error("Error adding comment:", error);
@@ -102,7 +49,7 @@ function ReelCommentModal({ reelId, onClose }) {
       <div className="flex-grow overflow-y-auto p-4">
         {comments.map((comment, index) => (
           <div key={index} className="mb-4">
-            <p><strong>{comment.username}</strong> {comment.text}</p>
+            <p><strong>SSS</strong> {comment.comment}</p>
           </div>
         ))}
       </div>

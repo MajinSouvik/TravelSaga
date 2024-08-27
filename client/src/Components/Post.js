@@ -11,7 +11,7 @@ function Post({ images, videos, feedID, onClose }) {
           {/* Slide Section */}
           <div className="w-[40%] h-full flex items-center justify-center">
             <div className="w-full h-full relative flex items-center justify-center">
-              <Slide className="w-full h-full flex items-center justify-center">
+              <Slide pprops="post" className="w-full h-full flex items-center justify-center">
                 {[
                   ...images.map((image, index) => (
                     <img

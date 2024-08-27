@@ -10,11 +10,11 @@ module.exports.normalFunc=async(req,res)=>{
 
 module.exports.register=async(req,res)=>{
     try{
-        console.log("here in register auth",req.body);
-        const {username,password}=req.body
+        const {username,password,profilePic}=req.body
         const confirmPassword=password
 
-        const user=await User.create({username,password,confirmPassword});
+        const user=await User.create({username,password,profilePic,confirmPassword});
+        console.log(user)
         res.status(200).send({status:true})
     }catch(err){
         res.status(404).send(err)

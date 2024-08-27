@@ -7,6 +7,10 @@ const userSchema=new mongoose.Schema({
         unique:true,
         required: [true, "Email is Required"]
     },
+    profilePic: {
+        type: String, 
+        default: '', 
+    },
     password:{
         type:String,
         required: [true, "Password is Required"]

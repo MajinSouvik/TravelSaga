@@ -116,7 +116,7 @@ function Shorts() {
             reelID={reel._id}
             src={reel.url.url}
             name={reel.name}
-            comment={reel.comments}
+            // comment={reel.comments}
             inView={inViewReels[reel._id]}
             onOpenCommentModal={() => handleOpenCommentModal(reel._id)}
           />

@@ -9,6 +9,7 @@ function Feeds(){
     const dispatch=useDispatch()
     const feeds=useSelector((store)=>store.feed.feeds)
     
+   
     useEffect(() =>{
         console.log("posts called !!")
         const getPosts=async()=>{
@@ -27,6 +28,7 @@ function Feeds(){
                 return (<Feed
                             feedID={feed._id}
                             content={feed.files} 
+                            avatar={feed.postedBy.profilePic}
                             name={feed.name}
                             place={feed.place}
                             desc={feed.description}
@@ -37,3 +39,4 @@ function Feeds(){
 }
 
 export default Feeds
+

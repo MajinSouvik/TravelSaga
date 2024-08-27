@@ -1,4 +1,4 @@
-const Post=require("../models/postModel")
+const Reel=require("../models/reelModel")
 
 module.exports.addComment=async(req,res)=>{
     try{
@@ -7,13 +7,13 @@ module.exports.addComment=async(req,res)=>{
              postedBy:req.id
         }
 
-        Post.findByIdAndUpdate(req.body.postID, {
+        Reel.findByIdAndUpdate(req.body.reelID, {
             $push: { comments: comment }
         }, {
             new: true
         })
-            .populate("comments.postedBy", "_id username profilePic")
-            .populate("postedBy", "_id username profilePic")
+            .populate("comments.postedBy", "_id username")
+            .populate("postedBy", "_id username")
             .then((result) => {
                 if (result) {
                     return res.status(200).json(result)
@@ -23,19 +23,19 @@ module.exports.addComment=async(req,res)=>{
             })
 
     }catch(err){
-        console.log("post-comment-error",err)
+        console.log("reel-comment-error",err)
         return res.status(404).json({err, status:false})
     }
 }
 
-module.exports.getAllPostComments=async(req,res)=>{
+module.exports.getAllReelComments=async(req,res)=>{
     try{
-        const post=await Post.findById(req.query.postID).populate("comments.postedBy", "_id username profilePic").populate("postedBy", "_id username profilePic")
-        const comments=post.comments
-        console.log("post-->",post)
+        const reel=await Reel.findById(req.query.reelID)
+        const comments=reel.comments
+        console.log(comments)
         return res.status(200).json({comments, status:true})
     }catch(err){
-        console.log("post-comment-error",err)
+        console.log("reel-comment-error",err)
         return res.status(404).json({err, status:false})
     }
 }

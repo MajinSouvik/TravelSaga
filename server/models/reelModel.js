@@ -27,5 +27,17 @@ const reelSchema=new mongoose.Schema({
     }
 })
 
+
+// comments:[{
+//     comment: {type:String},
+//     postedBy:{type:ObjectId, ref:"userModel"}
+// }],
+
+// postedBy:{
+//     type:ObjectId,
+//     ref:"userModel"
+// }
+
+
 const reelModel=mongoose.model('reelModel',reelSchema)
 module.exports=reelModel

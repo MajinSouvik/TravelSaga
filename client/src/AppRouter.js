@@ -1,6 +1,6 @@
 import {createBrowserRouter,RouterProvider} from "react-router-dom"
 import App from "./App"
-import Register from "./Components/Register"
+import Registration from "./Components/Registration"
 import Login from "./Components/Login"
 import Body from "./Components/Body"
 import Shorts from "./Components/Shorts"
@@ -17,9 +17,9 @@ function AppRouter(){
 
       {
         path:"/signup",
-        element:<Register />
+        element:<Registration />
       },
-    
+
       {
         path:"/login",
         element:<Login />

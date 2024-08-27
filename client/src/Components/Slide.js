@@ -5,10 +5,14 @@ export default function Slide({
   children: slides,
   autoSlide = false,
   autoSlideInterval = 3000,
+  pprops
 }) {
   const [curr, setCurr] = useState(0);
   const slideRefs = useRef([]);
   const observerRef = useRef(null);
+
+
+  console.log("pprops-->", pprops)
 
   const prev = () =>
     setCurr((curr) => (curr === 0 ? slides.length - 1 : curr - 1));
@@ -62,7 +66,7 @@ export default function Slide({
   };
 
   return (
-    <div className="relative overflow-hidden">
+    <div className="relative overflow-hidden ">
       <div
         className="flex transition-transform ease-out duration-500"
         style={{ transform: `translateX(-${curr * 100}%)` }}
@@ -72,7 +76,7 @@ export default function Slide({
             key={index}
             ref={(el) => (slideRefs.current[index] = el)}
             className="min-w-full flex items-center justify-center"
-            style={{ aspectRatio: "9/16" }} // Enforce aspect ratio
+            style={{ aspectRatio: pprops === "post" ? "9/16" : "1/1", }} // Enforce aspect ratio
             onClick={() => handleVideoClick(index)} // Add click handler to each slide
           >
             <div className="w-full h-full">{slide}</div>
@@ -109,3 +113,6 @@ export default function Slide({
     </div>
   );
 }
+
+
+

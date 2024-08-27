@@ -1,36 +1,46 @@
-import { useState, useEffect } from "react";
 import Slide from "./Slide"
+import useMedia from "../hooks/useMedia";
 
 function SlideContent({ files }) {
-    const [media, setMedia] = useState([]);
-    
-    const loadMedia = () => {
-        const filesArray = Array.from(files);
-        const mediaArray = [];
+    console.log("files--->", files)
+    const { images, videos }=useMedia(files)
 
-        filesArray.forEach((file) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-
-            reader.onload = () => {
-                mediaArray.push({
-                    type: file.type.startsWith('image/') ? 'image' : 'video',
-                    url: reader.result,
-                });
-
-                if (mediaArray.length === filesArray.length) {
-                    setMedia(mediaArray);
-                }
-            };
-        });
-    };
-
-    useEffect(() => {
-        loadMedia();
-    }, [files]);
+    console.log("slide-content-media-images-->",images)
+    console.log("slide-content-media-videos-->",videos)
 
     return (
-      <Slide media={media} />
+        <Slide>
+        {[
+          ...images.map((image, index) => {
+            // Check if image is a URL string or a file object
+            const imageUrl = typeof image === "string" ? image : URL.createObjectURL(image);
+            return (
+              <img
+                key={`image-${index}`}
+                src={imageUrl}
+                alt={`Slide ${index + 1}`}
+                className="object-cover w-full h-full"
+              />
+            );
+          }),
+      
+          ...videos.map((video, index) => {
+            // Check if video is a URL string or a file object
+            const videoUrl = typeof video === "string" ? video : URL.createObjectURL(video);
+            return (
+              <video
+                key={`video-${index}`}
+                data-index={index}
+                src={videoUrl}
+                loop
+                playsInline
+                className="object-cover w-full h-full"
+              />
+            );
+          }),
+        ]}
+      </Slide>
+      
     );
 }
 

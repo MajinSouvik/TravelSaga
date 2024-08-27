@@ -6,6 +6,9 @@ const reelRoutes=require("./routes/reelRoutes")
 const postRoutes=require("./routes/postRoutes")
 const userRoutes=require("./routes/userRoutes")
 const commentPostRoutes=require("./routes/commentPostRoutes")
+const commentReelRoutes=require("./routes/commentReelRoutes")
+
+
 const cookieParser = require("cookie-parser");
 const {DB_LINK}=require("./credentials")
 
@@ -25,10 +28,11 @@ app.use(
 app.use(express.json())
 app.use(cookieParser());
 
-app.use("/", authRoutes)
+app.use("/auth", authRoutes)
 app.use("/posts", postRoutes)
 app.use("/reels",reelRoutes)
 app.use("/post-comment", commentPostRoutes)
+app.use("/reel-comment", commentReelRoutes)
 app.use("/user", userRoutes)
 
 app.listen(8000, (err) => {

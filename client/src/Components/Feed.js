@@ -139,17 +139,22 @@
 // export default Feed;
 
 import React, { useState, useRef, useEffect, useCallback } from "react";
+import {useSelector} from "react-redux"
 import axios from "axios";
 import Slide from "./Slide";
 import useMedia from "../hooks/useMedia";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import CommentIcon from '@mui/icons-material/Comment';
 import SendIcon from '@mui/icons-material/Send';
+// import { openSlice } from "../redux/slideSlice";
 import Post from "./Post";
 
 axios.defaults.withCredentials = true;
 
 function Feed(props) {
+  // const dispatch=useDispatch()
+  const open=useSelector((store)=>store.slide.isOpen)
+  console.log("open-->", open)
   const { images, videos } = useMedia(props.content);
   const [showModal, setShowModal] = useState(false);
   const [post, setPost] = useState({});
@@ -244,7 +249,7 @@ function Feed(props) {
 
         {/* Post Media */}
         <div className="max-w-lg">
-          <Slide>
+          {open && (<Slide>
             {[
               ...images.map((image, index) => (
                 <img
@@ -268,7 +273,7 @@ function Feed(props) {
                 />
               )),
             ]}
-          </Slide>
+          </Slide>)}
         </div>
 
         {/* Post Actions */}

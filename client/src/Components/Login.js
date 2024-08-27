@@ -1,24 +1,38 @@
-import { Box, Button, TextField, Typography } from "@mui/material";
+import React, { useRef, useState } from 'react';
+import { TextField, Button, Typography, Container } from '@mui/material';
+import { styled } from '@mui/system';
 import axios from "axios";
-import { useRef } from "react";
 import {useDispatch} from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {login} from "../redux/authSlice"
 
-function Login(){
-  const dispatch = useDispatch(); 
-  const history = useNavigate();
+const FormContainer = styled(Container)(() => ({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  backgroundColor: 'rgba(255, 255, 255, 0.85)',
+  padding: '2rem',
+  borderRadius: '1rem',
+  boxShadow: '0 8px 20px rgba(0, 0, 0, 0.15)',
+}));
 
-  const usernameRef=useRef(null)
-  const passwordRef=useRef(null)
-  
+const Login = () => {
+  const usernameRef = useRef(null);
+  const passwordRef = useRef(null);
+  const history = useNavigate();
+  const dispatch = useDispatch(); 
+  const [errorMessage, setErrorMessage] = useState("");
+
   const sendRequest = async () => {
     const res = await axios
-      .post("http://localhost:8000/login", {
+      .post("http://localhost:8000/auth/login", {
         username: usernameRef.current.value,
         password: passwordRef.current.value,
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err)
+        setErrorMessage("Invalid Username or Password!")
+    });
 
     const data = await res.data;
     localStorage.setItem('token',data.signature)
@@ -26,50 +40,79 @@ function Login(){
     return data;
   };
 
-  const handleSubmit = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    // send http request
     sendRequest()
         .then(() =>dispatch(login()))
         .then(() => history("/app"));
   };
 
   return (
-    <div>
-      <form onSubmit={(e)=>handleSubmit(e)}>
-        <Box
-          marginLeft="auto"
-          marginRight="auto"
-          width={300}
-          display="flex"
-          flexDirection={"column"}
-          justifyContent="center"
-          alignItems="center"
+    <div className="flex justify-center items-center h-screen bg-cover bg-center relative bg-[url('https://source.unsplash.com/1600x900/?nature')]">
+      {/* Gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-r from-green-600 to-blue-500 opacity-60"></div>
+
+      <FormContainer maxWidth="xs" className="relative z-10">
+        <Typography variant="h4" className="text-center mb-6 font-semibold text-gray-800">Welcome Back</Typography>
+
+        {/* Error Message */}
+        {errorMessage && (
+          <Typography variant="body2" className="text-red-600 mb-4">
+            {errorMessage}
+          </Typography>
+        )}
+
+        {/* Username Field */}
+        <TextField
+          name="username"
+          inputRef={usernameRef}
+          placeholder="Username"
+          label="Username"
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          className="rounded-lg bg-white shadow-sm"
+          InputProps={{
+            style: {
+              borderRadius: '8px',
+            },
+          }}
+        />
+
+        {/* Password Field */}
+        <TextField
+          name="password"
+          inputRef={passwordRef}
+          label="Password"
+          type="password"
+          placeholder="Password"
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          className="rounded-lg bg-white shadow-sm"
+          InputProps={{
+            style: {
+              borderRadius: '8px',
+            },
+          }}
+        />
+
+        {/* Login Button */}
+        <Button
+          variant="contained"
+          color="primary"
+          fullWidth
+          className="bg-gradient-to-r from-purple-600 to-blue-500 hover:from-purple-700 hover:to-blue-600 text-white font-semibold py-2 rounded-lg shadow-md hover:shadow-lg transition duration-300"
+          onClick={handleLogin}
         >
-            <Typography variant="h2">Login</Typography>
+          Log In
+        </Button>
 
-            <TextField
-                name="username"
-                inputRef={usernameRef}
-                variant="outlined"
-                placeholder="Username"
-                margin="normal"
-            />
-
-            <TextField
-                name="password"
-                inputRef={passwordRef}
-                type="password"
-                variant="outlined"
-                placeholder="Password"
-                margin="normal"
-            />
-
-            <Button variant="contained" type="submit">
-                Login
-            </Button>
-        </Box>
-      </form>
+        {/* Sign Up Link */}
+        <Typography variant="body2" className="mt-4 text-gray-700">
+          Don't have an account? <a href="/sign" className="text-blue-500 hover:underline">Sign up</a>
+        </Typography>
+      </FormContainer>
     </div>
   );
 };

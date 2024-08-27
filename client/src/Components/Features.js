@@ -5,6 +5,7 @@ import {setFeed} from "../redux/feedSlice"
 import {setReels} from "../redux/reelSlice"
 import {setFeedReel} from "../redux/feedReelSlice"
 import { useNavigate } from "react-router-dom";
+import {openSlice} from "../redux/slideSlice"
 
 import axios from "axios"
 axios.defaults.withCredentials = true;
@@ -33,10 +34,15 @@ function Features(props){
         history("/app")
     }
 
+    const change=()=>{
+        setShowModal(true)
+        dispatch(openSlice(false))
+    }
+
     return (
         <div className="flex flex-col place-self-start space-y-12 text-2xl mt-10">
             <button onClick={()=>getFeeds()}>Home</button>
-            <button onClick={()=>setShowModal(true)}>Create</button>
+            <button onClick={()=>change()}>Create</button>
             <button>Messenger</button>
             <button>Search</button>
             <button onClick={()=>getFilteredReels()}>ExploreX</button>

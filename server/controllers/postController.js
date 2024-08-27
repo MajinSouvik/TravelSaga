@@ -17,7 +17,7 @@ module.exports.uploadPost=async(req,res)=>{
 module.exports.getPosts=async(req,res)=>{
     try{
         // console.log("Inside getPosts controller....")
-        const posts=await Post.find()
+        const posts=await Post.find().populate("postedBy", "_id username profilePic")
         return res.status(200).json({posts, status:true})
     }catch(err){
         // console.log("error getPosts-->",err)
