@@ -5,13 +5,12 @@ function ReelCommentModal({ reelId, onClose }) {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
 
-
   useEffect(() => {
     const fetchComments = async () => {
       try {
-          const response = await axios.get("http://localhost:8000/reel-comment/all-comments", {
-          params: { reelID: reelId }
-    });
+        const response = await axios.get("http://localhost:8000/reel-comment/all-comments", {
+          params: { reelID: reelId },
+        });
         setComments(response.data.comments);
       } catch (error) {
         console.error("Error fetching comments:", error);
@@ -19,15 +18,16 @@ function ReelCommentModal({ reelId, onClose }) {
     };
 
     fetchComments();
-  }, []);
+  }, [reelId]);
 
   const handleAddComment = async (e) => {
     e.preventDefault();
     if (newComment.trim()) {
       try {
-        const resp = await axios.post("http://localhost:8000/reel-comment/add",
-          {"comment":newComment, 
-          "reelID":reelId})
+        const resp = await axios.post("http://localhost:8000/reel-comment/add", {
+          comment: newComment,
+          reelID: reelId,
+        });
 
         setComments(resp.data.comments);
         setNewComment('');
@@ -38,18 +38,29 @@ function ReelCommentModal({ reelId, onClose }) {
   };
 
   return (
-    <div className="fixed top-0 h-[50%] w-[30%] bg-white shadow-lg flex flex-col"
-         style={{ right: 'calc(15% + 10px)' }}>
+    <div
+      className="fixed top-0 h-[50%] w-[30%] bg-white shadow-lg flex flex-col"
+      style={{ right: 'calc(15% + 10px)' }}
+    >
       <div className="p-4 border-b flex justify-between items-center">
-        <button onClick={onClose} className="text-2xl">&times;</button>
+        <button onClick={onClose} className="text-2xl">
+          &times;
+        </button>
         <h2 className="text-xl font-bold">Comments</h2>
         <div className="w-6"></div>
       </div>
 
       <div className="flex-grow overflow-y-auto p-4">
         {comments.map((comment, index) => (
-          <div key={index} className="mb-4">
-            <p><strong>SSS</strong> {comment.comment}</p>
+          <div key={index} className="mb-4 flex items-start">
+            <img
+              src={comment.postedBy.profilePic}
+              alt={comment.postedBy.username}
+              className="w-8 h-8 rounded-full mr-3"
+            />
+            <p>
+              <strong>{comment.postedBy.username}</strong> {comment.comment}
+            </p>
           </div>
         ))}
       </div>
@@ -85,6 +96,7 @@ function ReelCommentModal({ reelId, onClose }) {
 }
 
 export default ReelCommentModal;
+
 
 
 

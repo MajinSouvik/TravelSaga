@@ -12,8 +12,8 @@ module.exports.addComment=async(req,res)=>{
         }, {
             new: true
         })
-            .populate("comments.postedBy", "_id username")
-            .populate("postedBy", "_id username")
+            .populate("comments.postedBy", "_id username profilePic")
+            .populate("postedBy", "_id username profilePic")
             .then((result) => {
                 if (result) {
                     return res.status(200).json(result)
@@ -30,7 +30,7 @@ module.exports.addComment=async(req,res)=>{
 
 module.exports.getAllReelComments=async(req,res)=>{
     try{
-        const reel=await Reel.findById(req.query.reelID)
+        const reel=await Reel.findById(req.query.reelID).populate("comments.postedBy", "_id username profilePic").populate("postedBy", "_id username profilePic")
         const comments=reel.comments
         console.log(comments)
         return res.status(200).json({comments, status:true})
@@ -39,3 +39,4 @@ module.exports.getAllReelComments=async(req,res)=>{
         return res.status(404).json({err, status:false})
     }
 }
+

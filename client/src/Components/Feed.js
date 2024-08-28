@@ -143,20 +143,21 @@ import {useSelector} from "react-redux"
 import axios from "axios";
 import Slide from "./Slide";
 import useMedia from "../hooks/useMedia";
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import CommentIcon from '@mui/icons-material/Comment';
 import SendIcon from '@mui/icons-material/Send';
-// import { openSlice } from "../redux/slideSlice";
+
 import Post from "./Post";
 
 axios.defaults.withCredentials = true;
 
 function Feed(props) {
-  // const dispatch=useDispatch()
   const open=useSelector((store)=>store.slide.isOpen)
-  console.log("open-->", open)
   const { images, videos } = useMedia(props.content);
   const [showModal, setShowModal] = useState(false);
+  const [isLiked, setIsLiked]=useState(props.isLikedByUser)
+  const [likes, setLikes]=useState(props.likes)
   const [post, setPost] = useState({});
   const videoRefs = useRef([]);
   const [currentPlayingIndex, setCurrentPlayingIndex] = useState(null);
@@ -169,6 +170,15 @@ function Feed(props) {
     setPost(resp.data.post);
     setShowModal(true);
   };
+
+  const likeDislikePost=async()=>{
+    const resp = await axios.put("http://localhost:8000/posts/like-dislike/", {
+      postId: props.feedID
+    });
+
+    setIsLiked(resp.data.liked)
+    setLikes(resp.data.likes)
+  }
 
   const handleVideoVisibility = useCallback((index, isVisible) => {
     if (isVisible) {
@@ -279,8 +289,12 @@ function Feed(props) {
         {/* Post Actions */}
         <div className="flex justify-between items-center p-4">
           <div className="flex space-x-4">
-            <button className="text-gray-700 hover:text-red-500">
-              <FavoriteBorderIcon />
+            <button className="text-gray-700 hover:text-red-500" onClick={()=>likeDislikePost()}>
+            {isLiked ? (
+            <FavoriteIcon style={{ color: 'red', cursor: 'pointer' }} />
+      ) : (
+        <FavoriteBorderIcon style={{ color: 'gray', cursor: 'pointer' }} />
+      )}
             </button>
             <button className="text-gray-700 hover:text-blue-500">
               <CommentIcon onClick={() => getPost()} />
@@ -296,7 +310,7 @@ function Feed(props) {
 
         {/* Post Likes */}
         <div className="px-4 py-2">
-          <p className="font-semibold">100 likes</p>
+          <p className="font-semibold">{likes} likes</p>
         </div>
 
         {/* Post Caption */}

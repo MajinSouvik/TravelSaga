@@ -9,9 +9,7 @@ function Feeds(){
     const dispatch=useDispatch()
     const feeds=useSelector((store)=>store.feed.feeds)
     
-   
     useEffect(() =>{
-        console.log("posts called !!")
         const getPosts=async()=>{
             const posts=await axios.get("http://localhost:8000/posts/get-posts")
             console.log("posts in feeds-->", posts)
@@ -27,6 +25,8 @@ function Feeds(){
             {feeds.length!==0 && feeds.map(feed=>{
                 return (<Feed
                             feedID={feed._id}
+                            isLikedByUser={feed.isLikedByUser}
+                            likes={feed.likes.length}
                             content={feed.files} 
                             avatar={feed.postedBy.profilePic}
                             name={feed.name}

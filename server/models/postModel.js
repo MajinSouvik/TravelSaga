@@ -20,6 +20,13 @@ const postSchema=new mongoose.Schema({
         type:Object,
         required:true
     }],
+
+    likes: [
+        {
+          type: ObjectId,
+          ref: "userModel", 
+        },
+    ],
     
     comments:[{
         comment: {type:String},
@@ -31,6 +38,15 @@ const postSchema=new mongoose.Schema({
         ref:"userModel"
     }
 })
+
+postSchema.virtual('likeCount').get(function() {
+    return this.likes.length;
+  });
+  
+  // Method to check if a specific user has liked the post
+  postSchema.methods.isLikedByUser = function(userId) {
+    return this.likes.includes(userId);
+  };
 
 const postModel=mongoose.model('postModel',postSchema)
 module.exports=postModel

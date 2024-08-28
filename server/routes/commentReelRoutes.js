@@ -4,6 +4,7 @@ const router=require("express").Router()
 
 router.post("/add",verifyToken, addComment)
 router.get("/all-comments",verifyToken, getAllReelComments)
+router.put("/")
 
 
 // router.post("/add", addComment)

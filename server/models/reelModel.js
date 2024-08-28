@@ -20,6 +20,13 @@ const reelSchema=new mongoose.Schema({
         comment: {type:String},
         postedBy:{type:ObjectId, ref:"userModel"}
     }],
+
+    likes: [
+        {
+          type: ObjectId,
+          ref: "userModel", 
+        },
+    ],
     
     postedBy:{
         type:ObjectId,
@@ -28,15 +35,15 @@ const reelSchema=new mongoose.Schema({
 })
 
 
-// comments:[{
-//     comment: {type:String},
-//     postedBy:{type:ObjectId, ref:"userModel"}
-// }],
+reelSchema.virtual('likeCount').get(function() {
+    return this.likes.length;
+  });
+  
+  // Method to check if a specific user has liked the post
+  reelSchema.methods.isLikedByUser = function(userId) {
+    return this.likes.includes(userId);
+  };
 
-// postedBy:{
-//     type:ObjectId,
-//     ref:"userModel"
-// }
 
 
 const reelModel=mongoose.model('reelModel',reelSchema)
