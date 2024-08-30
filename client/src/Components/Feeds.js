@@ -1,24 +1,13 @@
 import Feed from "./Feed"
-import {useEffect} from "react"
-import {useSelector, useDispatch} from "react-redux"
-import {setFeed} from "../redux/feedSlice"
+import {useSelector} from "react-redux"
 import axios from "axios"
+import useGetPosts from "../hooks/useGetPosts"
 axios.defaults.withCredentials = true;
 
 function Feeds(){
-    const dispatch=useDispatch()
     const feeds=useSelector((store)=>store.feed.feeds)
+    useGetPosts()
     
-    useEffect(() =>{
-        const getPosts=async()=>{
-            const posts=await axios.get("http://localhost:8000/posts/get-posts")
-            console.log("posts in feeds-->", posts)
-            dispatch(setFeed(posts.data.posts))
-        }
-        getPosts()
-    },[])
-
-
     return (
         <div className="flex flex-col justify-center items-center">
             <p className="text-4xl">Feeds</p>

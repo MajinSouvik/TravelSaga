@@ -1,57 +1,118 @@
-import {useState} from "react"
-import PopUpCreateClose from "./PopUpCreateClose"
-import {useDispatch, useSelector} from "react-redux"
-import {setFeed} from "../redux/feedSlice"
-import {setReels} from "../redux/reelSlice"
-import {setFeedReel} from "../redux/feedReelSlice"
+import { useState } from "react";
+import PopUpCreateClose from "./PopUpCreateClose";
+import { useDispatch } from "react-redux";
+import { setFeed } from "../redux/feedSlice";
+import { setFeedReel } from "../redux/feedReelSlice";
 import { useNavigate } from "react-router-dom";
-import {openSlice} from "../redux/slideSlice"
+import { openSlice } from "../redux/slideSlice";
+import FeedIcon from '@mui/icons-material/Feed';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import ChatIcon from '@mui/icons-material/Chat';
+import SearchIcon from '@mui/icons-material/Search';
+import TravelExploreIcon from '@mui/icons-material/TravelExplore';
+import VideoLibraryIcon from '@mui/icons-material/VideoLibrary';
+import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
+import axios from "axios";
 
-import axios from "axios"
 axios.defaults.withCredentials = true;
 
-function Features(props){
-    const [showModal, setShowModal]=useState(false)
-    // const feedOrReel=useSelector((store)=>store.feedReel.feedReel) 
-    const dispatch=useDispatch()
-    const history = useNavigate();
+const FeaturesButton = ({ icon: Icon, label, isActive, onClick }) => (
+  <button
+    className={`flex items-center space-x-4 p-3 rounded-lg ${
+      isActive ? 'text-black font-bold bg-gray-100' : 'text-gray-600 hover:bg-gray-200'
+    } transition duration-200 ease-in-out`}
+    onClick={onClick}
+  >
+    <Icon className={`text-4xl ${isActive ? 'text-black' : 'text-gray-600'} transition duration-200 ease-in-out`} />
+    <span className={`text-xl ${isActive ? 'text-black font-bold' : 'text-gray-600'} transition duration-200 ease-in-out`}>{label}</span>
+  </button>
+);
 
-    const getFilteredReels=async()=>{
-        const resp=await axios.get("http://localhost:8000/reels/filtered-reels/",
-            {"params":{"place":"Dubai"}
-        })
-        dispatch(setFeed(resp.data.reels))
+function Features() {
+  const [showModal, setShowModal] = useState(false);
+  const [activeButton, setActiveButton] = useState(null);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleButtonClick = (buttonName, action) => {
+    setActiveButton(buttonName);
+    action && action();
+  };
+
+  const getFilteredReels = async () => {
+    try {
+      const resp = await axios.get("http://localhost:8000/reels/filtered-reels/", {
+        params: { place: "Dubai" },
+      });
+      dispatch(setFeed(resp.data.reels));
+      setActiveButton('ExploreX');
+    } catch (error) {
+      console.error("Error fetching filtered reels:", error);
     }
+  };
 
-    const getReels=async()=>{
-        dispatch(setFeedReel(false))
-        history("/app/reels")
-        // const resp=await axios.get("http://localhost:8000/reels/get-reels/")
-    }
+  const getReels = () => {
+    dispatch(setFeedReel(false));
+    navigate("/app/reels");
+  };
 
-    const getFeeds=()=>{
-        dispatch(setFeedReel(true))
-        history("/app")
-    }
+  const getFeeds = () => {
+    dispatch(setFeedReel(true));
+    navigate("/app");
+  };
 
-    const change=()=>{
-        setShowModal(true)
-        dispatch(openSlice(false))
-    }
+  return (
+    <div className="flex flex-col place-self-start space-y-4 text-lg mt-10">
+      <FeaturesButton
+        icon={FeedIcon}
+        label="Feed"
+        isActive={activeButton === 'Feed'}
+        onClick={() => handleButtonClick('Feed', getFeeds)}
+      />
+      <FeaturesButton
+        icon={AddCircleOutlineIcon}
+        label="Create"
+        isActive={activeButton === 'Create'}
+        onClick={() => handleButtonClick('Create', () => {
+          setShowModal(true);
+          dispatch(openSlice(false));
+        })}
+      />
+      <FeaturesButton
+        icon={ChatIcon}
+        label="Chats"
+        isActive={activeButton === 'Chats'}
+        onClick={() => handleButtonClick('Chats')}
+      />
+      <FeaturesButton
+        icon={SearchIcon}
+        label="Search"
+        isActive={activeButton === 'Search'}
+        onClick={() => handleButtonClick('Search')}
+      />
+      <FeaturesButton
+        icon={TravelExploreIcon}
+        label="ExploreX"
+        isActive={activeButton === 'ExploreX'}
+        onClick={getFilteredReels}
+      />
+      <FeaturesButton
+        icon={VideoLibraryIcon}
+        label="Shorts"
+        isActive={activeButton === 'Shorts'}
+        onClick={() => handleButtonClick('Shorts', getReels)}
+      />
+      <FeaturesButton
+        icon={AlternateEmailIcon}
+        label="Mentions"
+        isActive={activeButton === 'Mentions'}
+        onClick={() => handleButtonClick('Mentions')}
+      />
 
-    return (
-        <div className="flex flex-col place-self-start space-y-12 text-2xl mt-10">
-            <button onClick={()=>getFeeds()}>Home</button>
-            <button onClick={()=>change()}>Create</button>
-            <button>Messenger</button>
-            <button>Search</button>
-            <button onClick={()=>getFilteredReels()}>ExploreX</button>
-            <button onClick={()=>getReels()}>Shorts</button>
-            <button>Notifications</button>
-            {showModal && <PopUpCreateClose onClose={()=>setShowModal(false)} />}
-        </div>
-    )
+      {showModal && <PopUpCreateClose onClose={() => setShowModal(false)} />}
+    </div>
+  );
 }
 
+export default Features;
 
-export default Features

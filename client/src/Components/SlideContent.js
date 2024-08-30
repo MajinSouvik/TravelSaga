@@ -2,11 +2,7 @@ import Slide from "./Slide"
 import useMedia from "../hooks/useMedia";
 
 function SlideContent({ files }) {
-    console.log("files--->", files)
     const { images, videos }=useMedia(files)
-
-    console.log("slide-content-media-images-->",images)
-    console.log("slide-content-media-videos-->",videos)
 
     return (
         <Slide>

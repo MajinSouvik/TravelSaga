@@ -11,9 +11,6 @@ export default function Slide({
   const slideRefs = useRef([]);
   const observerRef = useRef(null);
 
-
-  console.log("pprops-->", pprops)
-
   const prev = () =>
     setCurr((curr) => (curr === 0 ? slides.length - 1 : curr - 1));
   const next = () =>
@@ -66,7 +63,7 @@ export default function Slide({
   };
 
   return (
-    <div className="relative overflow-hidden ">
+    <div className="relative overflow-hidden">
       <div
         className="flex transition-transform ease-out duration-500"
         style={{ transform: `translateX(-${curr * 100}%)` }}
@@ -113,6 +110,12 @@ export default function Slide({
     </div>
   );
 }
+
+
+
+
+
+
 
 
 

@@ -39,8 +39,8 @@ function ReelCommentModal({ reelId, onClose }) {
 
   return (
     <div
-      className="fixed top-0 h-[50%] w-[30%] bg-white shadow-lg flex flex-col"
-      style={{ right: 'calc(15% + 10px)' }}
+      className="fixed top-6 h-[50%] w-[30%] bg-white shadow-lg flex flex-col"
+      style={{ right: 'calc(5.5% + 10px)' }}
     >
       <div className="p-4 border-b flex justify-between items-center">
         <button onClick={onClose} className="text-2xl">

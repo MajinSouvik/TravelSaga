@@ -1,30 +1,25 @@
-import { useEffect, useCallback } from "react";
-import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react"
+import {useSelector, useDispatch} from "react-redux"
+import axios from "axios"
 import { setFeed } from "../redux/feedSlice";
-import axios from "axios";
-
 axios.defaults.withCredentials = true;
 
-function useGetPosts() {
+function useGetPosts(){
   const dispatch = useDispatch();
 
-  // Define the fetchPosts function inside the hook
-  const fetchPosts = useCallback(async () => {
-    try {
-      const posts = await axios.get("http://localhost:8000/posts/get-posts");
-      dispatch(setFeed(posts.data.posts));
-    } catch (error) {
-      console.error("Error fetching posts:", error);
-    }
-  }, [dispatch]);
-
-  // Use useEffect to fetch posts on initial load
   useEffect(() => {
-    fetchPosts();
-  }, [fetchPosts]);
+    const getPosts = async () => {
+      try {
+        const response = await axios.get("http://localhost:8000/posts/get-posts");
+        console.log("posts in feeds-->", response);
+        dispatch(setFeed(response.data.posts));
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+      }
+    };
 
-  // Return the fetchPosts function so it can be called manually
-  return fetchPosts;
+    getPosts();
+  }, [dispatch]);
 }
 
-export default useGetPosts;
+export default useGetPosts

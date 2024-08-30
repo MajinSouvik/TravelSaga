@@ -1,52 +1,109 @@
+// import React, { useState, useRef, useEffect, useCallback } from "react";
+// import { useSelector } from "react-redux";
+// import axios from "axios";
 // import Slide from "./Slide";
 // import useMedia from "../hooks/useMedia";
+// import FavoriteIcon from '@mui/icons-material/Favorite';
 // import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 // import CommentIcon from '@mui/icons-material/Comment';
 // import SendIcon from '@mui/icons-material/Send';
 // import Post from "./Post";
-// import axios from "axios";
-// import { useState, useRef, useEffect } from "react";
+
 // axios.defaults.withCredentials = true;
 
 // function Feed(props) {
+//   const open = useSelector((store) => store.slide.isOpen);
 //   const { images, videos } = useMedia(props.content);
 //   const [showModal, setShowModal] = useState(false);
+//   const [isLiked, setIsLiked] = useState(props.isLikedByUser);
+//   const [likes, setLikes] = useState(props.likes);
 //   const [post, setPost] = useState({});
 //   const videoRefs = useRef([]);
+//   const [currentPlayingIndex, setCurrentPlayingIndex] = useState(null);
+//   const observerRef = useRef(null);
 
 //   const getPost = async () => {
 //     const resp = await axios.get("http://localhost:8000/posts/get-post/", {
 //       "params": { "ID": props.feedID }
 //     });
-  
 //     setPost(resp.data.post);
 //     setShowModal(true);
 //   };
 
+//   const likeDislikePost = async () => {
+//     const resp = await axios.put("http://localhost:8000/posts/like-dislike/", {
+//       postId: props.feedID
+//     });
+
+//     setIsLiked(resp.data.liked);
+//     setLikes(resp.data.likes);
+//   };
+
+//   const handleVideoVisibility = useCallback((index, isVisible) => {
+//     if (isVisible) {
+//       setCurrentPlayingIndex(index);
+//     } else if (currentPlayingIndex === index) {
+//       setCurrentPlayingIndex(null);
+//     }
+//   }, [currentPlayingIndex]);
+
+//   useEffect(() => {
+//     observerRef.current = new IntersectionObserver((entries) => {
+//       entries.forEach((entry) => {
+//         const index = Number(entry.target.dataset.index);
+//         handleVideoVisibility(index, entry.isIntersecting);
+//       });
+//     }, { threshold: 0.5 });
+
+//     return () => {
+//       if (observerRef.current) {
+//         observerRef.current.disconnect();
+//       }
+//     };
+//   }, [handleVideoVisibility]);
+
+//   useEffect(() => {
+//     videoRefs.current.forEach((video, index) => {
+//       if (video) {
+//         if (index === currentPlayingIndex) {
+//           video.play();
+//         } else {
+//           video.pause();
+//         }
+//         observerRef.current.observe(video);
+//       }
+//     });
+
+//     return () => {
+//       videoRefs.current.forEach((video) => {
+//         if (video) observerRef.current.unobserve(video);
+//       });
+//     };
+//   }, [currentPlayingIndex]);
+
 //   useEffect(() => {
 //     if (showModal) {
-//       // Pause all videos and disable scrolling when modal is open
 //       videoRefs.current.forEach(video => {
 //         if (video) video.pause();
 //       });
+//       setCurrentPlayingIndex(null);
 //       document.body.style.overflow = 'hidden';
 //     } else {
-//       // Resume all videos and enable scrolling when modal is closed
-//       videoRefs.current.forEach(video => {
-//         if (video) video.play();
-//       });
+//       if (currentPlayingIndex !== null && videoRefs.current[currentPlayingIndex]) {
+//         videoRefs.current[currentPlayingIndex].play();
+//       }
 //       document.body.style.overflow = 'auto';
 //     }
 
-//     // Cleanup function
 //     return () => {
 //       document.body.style.overflow = 'auto';
 //     };
-//   }, [showModal]);
+//   }, [showModal, currentPlayingIndex]);
 
 //   return (
 //     <>
-//       <div className={`max-w-md mx-auto my-6 border rounded-lg shadow-lg overflow-hidden ${showModal ? 'filter blur-sm pointer-events-none' : ''}`}>
+//       {/* Set a fixed width for each Feed component */}
+//       <div className={`w-120 max-w-md mx-auto my-6 border rounded-lg shadow-lg overflow-hidden ${showModal ? 'filter blur-sm pointer-events-none' : ''}`}>
 //         {/* Post Header */}
 //         <div className="flex items-center p-4">
 //           <img
@@ -60,9 +117,13 @@
 //           </div>
 //         </div>
 
+
+//         {/* w-120 max-w-md */}
+
+//         {/* max-w-lg */}
 //         {/* Post Media */}
 //         <div className="max-w-lg">
-//           <Slide>
+//           {open && (<Slide>
 //             {[
 //               ...images.map((image, index) => (
 //                 <img
@@ -77,23 +138,27 @@
 //                 <video
 //                   key={`video-${index}`}
 //                   ref={el => videoRefs.current[index] = el}
+//                   data-index={index}
 //                   src={video.url}
-//                   autoPlay
-//                   muted
+//                   // muted
 //                   loop
 //                   playsInline
 //                   className="object-cover w-full h-full"
 //                 />
 //               )),
 //             ]}
-//           </Slide>
+//           </Slide>)}
 //         </div>
 
 //         {/* Post Actions */}
 //         <div className="flex justify-between items-center p-4">
 //           <div className="flex space-x-4">
-//             <button className="text-gray-700 hover:text-red-500">
-//               <FavoriteBorderIcon />
+//             <button className="text-gray-700 hover:text-red-500" onClick={() => likeDislikePost()}>
+//               {isLiked ? (
+//                 <FavoriteIcon style={{ color: 'red', cursor: 'pointer' }} />
+//               ) : (
+//                 <FavoriteBorderIcon style={{ color: 'gray', cursor: 'pointer' }} />
+//               )}
 //             </button>
 //             <button className="text-gray-700 hover:text-blue-500">
 //               <CommentIcon onClick={() => getPost()} />
@@ -109,7 +174,7 @@
 
 //         {/* Post Likes */}
 //         <div className="px-4 py-2">
-//           <p className="font-semibold">100 likes</p>
+//           <p className="font-semibold">{likes} likes</p>
 //         </div>
 
 //         {/* Post Caption */}
@@ -139,7 +204,7 @@
 // export default Feed;
 
 import React, { useState, useRef, useEffect, useCallback } from "react";
-import {useSelector} from "react-redux"
+import { useSelector } from "react-redux";
 import axios from "axios";
 import Slide from "./Slide";
 import useMedia from "../hooks/useMedia";
@@ -147,17 +212,18 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import CommentIcon from '@mui/icons-material/Comment';
 import SendIcon from '@mui/icons-material/Send';
-
 import Post from "./Post";
 
 axios.defaults.withCredentials = true;
 
+const FEED_WIDTH = 480; // Adjust this value as needed
+
 function Feed(props) {
-  const open=useSelector((store)=>store.slide.isOpen)
+  const open = useSelector((store) => store.slide.isOpen);
   const { images, videos } = useMedia(props.content);
   const [showModal, setShowModal] = useState(false);
-  const [isLiked, setIsLiked]=useState(props.isLikedByUser)
-  const [likes, setLikes]=useState(props.likes)
+  const [isLiked, setIsLiked] = useState(props.isLikedByUser);
+  const [likes, setLikes] = useState(props.likes);
   const [post, setPost] = useState({});
   const videoRefs = useRef([]);
   const [currentPlayingIndex, setCurrentPlayingIndex] = useState(null);
@@ -171,14 +237,14 @@ function Feed(props) {
     setShowModal(true);
   };
 
-  const likeDislikePost=async()=>{
+  const likeDislikePost = async () => {
     const resp = await axios.put("http://localhost:8000/posts/like-dislike/", {
       postId: props.feedID
     });
 
-    setIsLiked(resp.data.liked)
-    setLikes(resp.data.likes)
-  }
+    setIsLiked(resp.data.liked);
+    setLikes(resp.data.likes);
+  };
 
   const handleVideoVisibility = useCallback((index, isVisible) => {
     if (isVisible) {
@@ -242,8 +308,8 @@ function Feed(props) {
   }, [showModal, currentPlayingIndex]);
 
   return (
-    <>
-      <div className={`max-w-md mx-auto my-6 border rounded-lg shadow-lg overflow-hidden ${showModal ? 'filter blur-sm pointer-events-none' : ''}`}>
+    <div style={{ width: `${FEED_WIDTH}px`, margin: '24px auto' }}>
+      <div className={`border rounded-lg shadow-lg overflow-hidden ${showModal ? 'filter blur-sm pointer-events-none' : ''}`}>
         {/* Post Header */}
         <div className="flex items-center p-4">
           <img
@@ -258,46 +324,46 @@ function Feed(props) {
         </div>
 
         {/* Post Media */}
-        <div className="max-w-lg">
-          {open && (<Slide>
-            {[
-              ...images.map((image, index) => (
-                <img
-                  key={`image-${index}`}
-                  src={image.url}
-                  alt={`Slide ${index + 1}`}
-                  className="object-cover w-full h-full"
-                />
-              )),
-
-              ...videos.map((video, index) => (
-                <video
-                  key={`video-${index}`}
-                  ref={el => videoRefs.current[index] = el}
-                  data-index={index}
-                  src={video.url}
-                  // muted
-                  loop
-                  playsInline
-                  className="object-cover w-full h-full"
-                />
-              )),
-            ]}
-          </Slide>)}
+        <div style={{ width: `${FEED_WIDTH}px`, height: `${FEED_WIDTH}px` }}>
+          {open && (
+            <Slide feedWidth={FEED_WIDTH}>
+              {[
+                ...images.map((image, index) => (
+                  <img
+                    key={`image-${index}`}
+                    src={image.url}
+                    alt={`Slide ${index + 1}`}
+                    style={{ width: `${FEED_WIDTH}px`, height: `${FEED_WIDTH}px`, objectFit: 'cover' }}
+                  />
+                )),
+                ...videos.map((video, index) => (
+                  <video
+                    key={`video-${index}`}
+                    ref={el => videoRefs.current[index] = el}
+                    data-index={index}
+                    src={video.url}
+                    loop
+                    playsInline
+                    style={{ width: `${FEED_WIDTH}px`, height: `${FEED_WIDTH}px`, objectFit: 'cover' }}
+                  />
+                )),
+              ]}
+            </Slide>
+          )}
         </div>
 
         {/* Post Actions */}
         <div className="flex justify-between items-center p-4">
           <div className="flex space-x-4">
-            <button className="text-gray-700 hover:text-red-500" onClick={()=>likeDislikePost()}>
-            {isLiked ? (
-            <FavoriteIcon style={{ color: 'red', cursor: 'pointer' }} />
-      ) : (
-        <FavoriteBorderIcon style={{ color: 'gray', cursor: 'pointer' }} />
-      )}
+            <button className="text-gray-700 hover:text-red-500" onClick={likeDislikePost}>
+              {isLiked ? (
+                <FavoriteIcon style={{ color: 'red', cursor: 'pointer' }} />
+              ) : (
+                <FavoriteBorderIcon style={{ color: 'gray', cursor: 'pointer' }} />
+              )}
             </button>
-            <button className="text-gray-700 hover:text-blue-500">
-              <CommentIcon onClick={() => getPost()} />
+            <button className="text-gray-700 hover:text-blue-500" onClick={getPost}>
+              <CommentIcon />
             </button>
             <button className="text-gray-700 hover:text-yellow-500">
               <SendIcon />
@@ -333,8 +399,9 @@ function Feed(props) {
           />
         </div>
       }
-    </>
+    </div>
   );
 }
 
 export default Feed;
+

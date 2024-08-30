@@ -13,6 +13,7 @@ function Short({ reelID, src, name, comment, inView, onCommentClick,onOpenCommen
   const [likes, setLikes]=useState(0)
 
   useEffect(() => {
+    
     if (inView) {
       videoRef.current.play();
     } else {
@@ -70,9 +71,5 @@ function Short({ reelID, src, name, comment, inView, onCommentClick,onOpenCommen
 }
 
 export default Short;
-
-
-
-
 
 
