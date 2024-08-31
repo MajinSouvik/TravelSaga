@@ -54,13 +54,10 @@ import Body from "./Components/Body";
 import Shorts from "./Components/Shorts";
 import { useSelector } from "react-redux";
 
-// Wrapper component for conditional rendering
+// Component for handling conditional rendering based on authentication
 const DefaultRoute = () => {
     const isLoggedIn = useSelector((store) => store.auth.isLoggedIn);
-    console.log("token-->", isLoggedIn)
-    console.log("localStorage-->", localStorage)
-    // Redirect to '/app' if logged in, otherwise to '/login'
-    return isLoggedIn ? <App /> : <Login />;
+    return isLoggedIn ? <Navigate to="/app" /> : <Navigate to="/login" />;
 };
 
 function AppRouter() {
@@ -69,31 +66,29 @@ function AppRouter() {
     const routes = createBrowserRouter([
         {
             path: "/",
-            element: <DefaultRoute />,
+            element: <DefaultRoute />,  // Redirect to /app or /login based on authentication
+        },
+        {
+            path: "/signup",
+            element: <Registration />,  // Directly accessible
+        },
+        {
+            path: "/login",
+            element: <Login />,  // Directly accessible
+        },
+        {
+            path: "/app",
+            element: isLoggedIn ? <App /> : <Navigate to="/login" />,  // Conditional based on login status
             children: [
                 {
-                    path: "signup",
-                    element: <Registration />,
-                },
-                {
-                    path: "login",
-                    element: <Login />,
-                },
-                {
-                    path: "app",
-                    element: isLoggedIn ? <App /> : <Navigate to="/login" />,
-                    children: [
-                        {
-                            path: "reels",
-                            element: isLoggedIn ? <Shorts /> : <Navigate to="/login" />,
-                        },
-                    ],
+                    path: "reels",
+                    element: isLoggedIn ? <Shorts /> : <Navigate to="/login" />,  // Protected route
                 },
             ],
         },
         {
             path: "*",
-            element: <Navigate to={isLoggedIn ? "/app" : "/login"} />,
+            element: <Navigate to="/" />,  // Catch-all route redirects to root
         },
     ]);
 
@@ -101,4 +96,5 @@ function AppRouter() {
 }
 
 export default AppRouter;
+
 

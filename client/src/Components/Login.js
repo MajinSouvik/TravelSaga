@@ -110,7 +110,7 @@ const Login = () => {
 
         {/* Sign Up Link */}
         <Typography variant="body2" className="mt-4 text-gray-700">
-          Don't have an account? <a href="/sign" className="text-blue-500 hover:underline">Sign up</a>
+          Don't have an account? <a href="/signup" className="text-blue-500 hover:underline">Sign up</a>
         </Typography>
       </FormContainer>
     </div>

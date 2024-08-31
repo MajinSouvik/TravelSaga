@@ -36,7 +36,7 @@ module.exports.verifyToken = (req, res, next) => {
         const cookies = req.headers.cookie;
         const token = cookies.split("=")[1];
 
-        console.log("always-token-->**", token)
+        // console.log("always-token-->**", token)
 
         if (token) {
             jwt.verify(String(token), secret_key, (err, decodeToken) => {

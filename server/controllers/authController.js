@@ -51,3 +51,26 @@ module.exports.login=async(req,res)=>{
         return res.status(404).json({err, status:false})
     }
 }
+
+module.exports.logout=async(req,res)=>{
+    try{
+        const cookies = req.headers.cookie;
+        const prevToken = cookies.split("=")[1];
+        console.log("prevToken-logout-->", prevToken)
+        if (!prevToken) {
+            return res.status(400).json({ message: "Couldn't find token" });
+        }
+
+        jwt.verify(String(prevToken), secret_key, (err, user) => {
+            if (err) {
+                console.log(err);
+                return res.status(403).json({ message: "Authentication failed" });
+            }
+            res.clearCookie("login");
+            req.cookies["login"] = "";
+            return res.status(200).json({ message: "Successfully Logged Out" });  
+  });
+    }catch(err){
+        return res.status(404).json({err, status:false})
+    }
+}

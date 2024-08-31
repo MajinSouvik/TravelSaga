@@ -10,9 +10,14 @@ const authSlice=createSlice({
     reducers:{
         login:(state)=>{
             state.isLoggedIn=true
+        },
+
+        logout:(state)=>{
+            localStorage.clear()
+            state.isLoggedIn=false
         }
     }
 })
 
-export const {login}=authSlice.actions
+export const {login,logout}=authSlice.actions
 export default authSlice.reducer

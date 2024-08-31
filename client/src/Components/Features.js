@@ -3,6 +3,7 @@ import PopUpCreateClose from "./PopUpCreateClose";
 import { useDispatch } from "react-redux";
 import { setFeed } from "../redux/feedSlice";
 import { setFeedReel } from "../redux/feedReelSlice";
+import {logout} from "../redux/authSlice"
 import { useNavigate } from "react-router-dom";
 import { openSlice } from "../redux/slideSlice";
 import FeedIcon from '@mui/icons-material/Feed';
@@ -16,12 +17,13 @@ import axios from "axios";
 
 axios.defaults.withCredentials = true;
 
-const FeaturesButton = ({ icon: Icon, label, isActive, onClick }) => (
+const FeaturesButton = ({ icon: Icon, label, isActive, onClick, disabled }) => (
   <button
     className={`flex items-center space-x-4 p-3 rounded-lg ${
       isActive ? 'text-black font-bold bg-gray-100' : 'text-gray-600 hover:bg-gray-200'
-    } transition duration-200 ease-in-out`}
-    onClick={onClick}
+    } transition duration-200 ease-in-out ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+    onClick={disabled ? null : onClick}
+    disabled={disabled}
   >
     <Icon className={`text-4xl ${isActive ? 'text-black' : 'text-gray-600'} transition duration-200 ease-in-out`} />
     <span className={`text-xl ${isActive ? 'text-black font-bold' : 'text-gray-600'} transition duration-200 ease-in-out`}>{label}</span>
@@ -61,6 +63,18 @@ function Features() {
     navigate("/app");
   };
 
+  const logout=async()=>{
+    axios
+    .post("http://localhost:8000/auth/logout")
+    .then((res) => {
+      dispatch(logout())
+      navigate("/login")
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  }
+
   return (
     <div className="flex flex-col place-self-start space-y-4 text-lg mt-10">
       <FeaturesButton
@@ -83,18 +97,21 @@ function Features() {
         label="Chats"
         isActive={activeButton === 'Chats'}
         onClick={() => handleButtonClick('Chats')}
+        disabled={true}  // Disable this button
       />
       <FeaturesButton
         icon={SearchIcon}
         label="Search"
         isActive={activeButton === 'Search'}
         onClick={() => handleButtonClick('Search')}
+        disabled={true}  // Disable this button
       />
       <FeaturesButton
         icon={TravelExploreIcon}
         label="ExploreX"
         isActive={activeButton === 'ExploreX'}
         onClick={getFilteredReels}
+        disabled={true}  // Disable this button
       />
       <FeaturesButton
         icon={VideoLibraryIcon}
@@ -107,7 +124,16 @@ function Features() {
         label="Mentions"
         isActive={activeButton === 'Mentions'}
         onClick={() => handleButtonClick('Mentions')}
+        disabled={true}  // Disable this button
       />
+
+      <FeaturesButton
+        icon={AlternateEmailIcon}
+        label="Logout"
+        isActive={activeButton === 'Logout'}
+        onClick={() => handleButtonClick('Logout', logout)}
+      />
+      
 
       {showModal && <PopUpCreateClose onClose={() => setShowModal(false)} />}
     </div>
@@ -115,4 +141,3 @@ function Features() {
 }
 
 export default Features;
-

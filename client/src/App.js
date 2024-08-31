@@ -6,7 +6,7 @@ import SlideSearch from "./Components/SlideSearch";
 import axios from "axios";
 import { Outlet } from "react-router-dom";
 import { setUser } from "./redux/userSlice";
-
+import { useNavigate } from "react-router-dom";
 axios.defaults.withCredentials = true;
 
 let firstRender = true;
@@ -14,6 +14,7 @@ let firstRender = true;
 function App() {
   console.log("calling from App..")
   const dispatch = useDispatch();
+  const navigate=useNavigate()
   const user = useSelector((store) => store.user.user);
   const feedOrReel = useSelector((store) => store.feedReel.feedReel);
 
@@ -55,7 +56,11 @@ function App() {
     return () => clearInterval(interval);
   }, []);
 
-  if (user === null) return <h1>Loading..</h1>;
+  // if (user === null) return <h1>Loading..</h1>;
+
+  if (user === null){
+    navigate("/login")
+  }
 
   return (
     <div>
