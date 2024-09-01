@@ -3,7 +3,7 @@ import PopUpCreateClose from "./PopUpCreateClose";
 import { useDispatch } from "react-redux";
 import { setFeed } from "../redux/feedSlice";
 import { setFeedReel } from "../redux/feedReelSlice";
-import {logout} from "../redux/authSlice"
+import { logout as logoutAction } from "../redux/authSlice"; // Import renamed
 import { useNavigate } from "react-router-dom";
 import { openSlice } from "../redux/slideSlice";
 import FeedIcon from '@mui/icons-material/Feed';
@@ -63,17 +63,15 @@ function Features() {
     navigate("/app");
   };
 
-  const logout=async()=>{
-    axios
-    .post("http://localhost:8000/auth/logout")
-    .then((res) => {
-      dispatch(logout())
-      navigate("/login")
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-  }
+  const handleLogout = async () => { // Renamed function to avoid naming conflict
+    try {
+      await axios.post("http://localhost:8000/auth/logout");
+      dispatch(logoutAction()); // Use renamed import
+      navigate("/login");
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <div className="flex flex-col place-self-start space-y-4 text-lg mt-10">
@@ -131,9 +129,8 @@ function Features() {
         icon={AlternateEmailIcon}
         label="Logout"
         isActive={activeButton === 'Logout'}
-        onClick={() => handleButtonClick('Logout', logout)}
+        onClick={() => handleButtonClick('Logout', handleLogout)} // Updated function call
       />
-      
 
       {showModal && <PopUpCreateClose onClose={() => setShowModal(false)} />}
     </div>
@@ -141,3 +138,4 @@ function Features() {
 }
 
 export default Features;
+

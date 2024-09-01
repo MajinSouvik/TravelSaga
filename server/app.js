@@ -28,12 +28,12 @@ app.use(
 app.use(express.json())
 app.use(cookieParser());
 
-app.use("/auth", authRoutes)
+app.use("/auth",  authRoutes)
 app.use("/posts", postRoutes)
-app.use("/reels",reelRoutes)
+app.use("/reels", reelRoutes)
 app.use("/post-comment", commentPostRoutes)
 app.use("/reel-comment", commentReelRoutes)
-app.use("/user", userRoutes)
+app.use("/user",  userRoutes)
 
 app.listen(8000, (err) => {
     if (err) {

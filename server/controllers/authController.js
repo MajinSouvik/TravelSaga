@@ -74,3 +74,25 @@ module.exports.logout=async(req,res)=>{
         return res.status(404).json({err, status:false})
     }
 }
+
+module.exports.verify=async(req,res)=>{
+    try{
+        const token = req.body.token;
+
+        if (token) {
+            jwt.verify(String(token), secret_key, (err, decodeToken) => {
+                if (err) {
+                    console.log("Error occurred, maybe token expired -->", err);
+                    return res.status(400).json({ message: err.message, status: false });
+                }
+                
+                return res.status(200).json({status:true})
+            });
+        } else {
+            console.log("Invalid cookie in verifyToken");
+            return res.status(400).json({ message: "Invalid cookie!!", status: false });
+        }
+    }catch(err){
+        return res.status(404).json({err, status:false})
+    }
+}

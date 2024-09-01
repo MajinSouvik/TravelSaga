@@ -38,7 +38,7 @@ function Short({ reelID, src, name, comment, inView, onCommentClick,onOpenCommen
         ref={videoRef}
         className="w-full h-full object-cover"
         loop
-        muted
+        // muted
         playsInline
       >
         <source src={src} type="video/mp4" />
