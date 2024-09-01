@@ -72,7 +72,7 @@ const Registration = () => {
     if(file){
         const imageURL=await uploadImageToFirebase(file)
         if(imageURL){
-            sendRequest(imageURL).then(() => history("/logs"));
+            sendRequest(imageURL).then(() => history("/login"));
         }
     }
   };
