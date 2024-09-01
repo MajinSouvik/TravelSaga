@@ -15,7 +15,7 @@ function Shorts() {
 
   const getReels = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/reels/get-reels");
+      const response = await axios.get("https://travelsaga-frontend.vercel.app/reels/get-reels");
       setReels(response.data.reels);
     } catch (error) {
       console.error("Error fetching reels:", error);

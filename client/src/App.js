@@ -128,7 +128,7 @@ function App() {
     const feedOrReel = useSelector((store) => store.feedReel.feedReel);
 
     const sendRequest = async () => {
-        const resp = await axios.get("http://localhost:8000/user").catch((err) =>
+        const resp = await axios.get("https://travelsaga-frontend.vercel.app/user").catch((err) =>
             console.log(err)
         );
 
@@ -137,7 +137,7 @@ function App() {
     };
 
     const refreshToken = async () => {
-        const resp = await axios.get("http://localhost:8000/auth/refresh").catch((err) =>
+        const resp = await axios.get("https://travelsaga-frontend.vercel.app/auth/refresh").catch((err) =>
             console.log(err)
         );
 

@@ -146,7 +146,7 @@ const Login = () => {
 
   const sendRequest = async () => {
     try {
-      const res = await axios.post("http://localhost:8000/auth/login", {
+      const res = await axios.post("https://travelsaga-backend.vercel.app/auth/login", {
         username: usernameRef.current.value,
         password: passwordRef.current.value,
       });

@@ -43,7 +43,7 @@ function Features() {
 
   const getFilteredReels = async () => {
     try {
-      const resp = await axios.get("http://localhost:8000/reels/filtered-reels/", {
+      const resp = await axios.get("https://travelsaga-frontend.vercel.app/reels/filtered-reels/", {
         params: { place: "Dubai" },
       });
       dispatch(setFeed(resp.data.reels));
@@ -65,7 +65,7 @@ function Features() {
 
   const handleLogout = async () => { // Renamed function to avoid naming conflict
     try {
-      await axios.post("http://localhost:8000/auth/logout");
+      await axios.post("https://travelsaga-frontend.vercel.app/auth/logout");
       dispatch(logoutAction()); // Use renamed import
       navigate("/login");
     } catch (err) {

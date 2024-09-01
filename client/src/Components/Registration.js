@@ -55,7 +55,7 @@ const Registration = () => {
   const sendRequest = async (imageURL) => {
     try {
       const res = await axios
-      .post("http://localhost:8000/auth/register", {
+      .post("https://travelsaga-frontend.vercel.app/auth/register", {
         username: usernameRef.current.value,
         password: passwordRef.current.value,
         profilePic: imageURL

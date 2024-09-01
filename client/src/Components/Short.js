@@ -22,7 +22,7 @@ function Short({ reelID, src, name, comment, inView, onCommentClick,onOpenCommen
   }, [inView]);
 
   const likeDislikeReel=async()=>{
-    const resp = await axios.put("http://localhost:8000/reels/like-dislike/", {
+    const resp = await axios.put("https://travelsaga-frontend.vercel.app/reels/like-dislike/", {
       reelId: reelID
     });
 

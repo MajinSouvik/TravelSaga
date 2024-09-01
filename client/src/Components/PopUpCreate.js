@@ -39,7 +39,7 @@ function PopUpCreate({ close }) {
   }, [close]);
 
   const getPosts = async () => {
-    const posts = await axios.get("http://localhost:8000/posts/get-posts");
+    const posts = await axios.get("https://travelsaga-frontend.vercel.app/posts/get-posts");
     console.log("posts in feeds-->", posts);
     dispatch(setFeed(posts.data.posts));
   };
@@ -102,7 +102,7 @@ function PopUpCreate({ close }) {
       description: "My second post!!",
       files: filess,
     };
-    await axios.post("http://localhost:8000/posts/upload/", {
+    await axios.post("https://travelsaga-frontend.vercel.app/posts/upload/", {
       ...values,
     });
   };
@@ -116,7 +116,7 @@ function PopUpCreate({ close }) {
       files: finalFiles,
     };
 
-    const resp = await axios.post("http://localhost:8000/reels/upload/", {
+    const resp = await axios.post("https://travelsaga-frontend.vercel.app/reels/upload/", {
       ...values,
     });
 

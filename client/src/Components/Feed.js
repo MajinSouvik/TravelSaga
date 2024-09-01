@@ -25,7 +25,7 @@ function Feed(props) {
   const observerRef = useRef(null);
 
   const getPost = async () => {
-    const resp = await axios.get("http://localhost:8000/posts/get-post/", {
+    const resp = await axios.get("https://travelsaga-frontend.vercel.app/posts/get-post/", {
       "params": { "ID": props.feedID }
     });
     setPost(resp.data.post);
@@ -33,7 +33,7 @@ function Feed(props) {
   };
 
   const likeDislikePost = async () => {
-    const resp = await axios.put("http://localhost:8000/posts/like-dislike/", {
+    const resp = await axios.put("https://travelsaga-frontend.vercel.app/posts/like-dislike/", {
       postId: props.feedID
     });
 

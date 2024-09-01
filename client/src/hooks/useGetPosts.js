@@ -10,7 +10,7 @@ function useGetPosts(){
   useEffect(() => {
     const getPosts = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/posts/get-posts");
+        const response = await axios.get("https://travelsaga-frontend.vercel.app/posts/get-posts");
         console.log("posts in feeds-->", response);
         dispatch(setFeed(response.data.posts));
       } catch (error) {

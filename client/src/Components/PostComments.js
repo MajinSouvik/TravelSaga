@@ -9,7 +9,7 @@ const PostComments = ({ feedID }) => {
   useEffect(() => {
     const getAll = async () => {
       const post = await axios.get(
-        "http://localhost:8000/post-comment/all-comments",
+        "https://travelsaga-frontend.vercel.app/post-comment/all-comments",
         {
           params: { postID: feedID },
         }
@@ -31,7 +31,7 @@ const PostComments = ({ feedID }) => {
     e.preventDefault();
 
     const resp = await axios.post(
-      "http://localhost:8000/post-comment/add",
+      "https://travelsaga-frontend.vercel.app/post-comment/add",
       { comment: newComment, postID: feedID }
     );
 
