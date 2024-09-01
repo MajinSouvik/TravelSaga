@@ -8,6 +8,7 @@ const userRoutes=require("./routes/userRoutes")
 const commentPostRoutes=require("./routes/commentPostRoutes")
 const commentReelRoutes=require("./routes/commentReelRoutes")
 const cookieParser = require("cookie-parser");
+const bodyParser = require('body-parser');
 require("dotenv").config()
 
 app=express()
@@ -18,7 +19,7 @@ mongoose.connect(process.env.DB_LINK)
 
 app.use(
   cors({
-    origin: ["http://localhost:3000"],
+    origin: ["https://travelsaga-frontend.vercel.app"],
     methods: ["GET", "POST","PUT"],
     credentials: true,
   })
@@ -28,6 +29,8 @@ app.use(
 
 
 app.use(express.json())
+// app.use(bodyParser.urlencoded({extended:false}));
+// app.use(bodyParser.json());
 app.use(cookieParser());
 
 app.use("/auth",  authRoutes)
