@@ -1,5 +1,4 @@
 const jwt=require("jsonwebtoken")
-const {secret_key}=require("../credentials")
 const User=require("../models/authModel")
 
 console.log("Inside middleware..")
@@ -8,7 +7,7 @@ module.exports.protectRoute=(req,res,next)=>{
     try{
         console.log("here")
         if(req.cookies.login){
-            jwt.verify(req.cookies.login, secret_key,
+            jwt.verify(req.cookies.login, process.env.secret_key,
                 (err,decodeToken)=>{
                     if(err){
                         return res.json({status:false})
@@ -17,7 +16,7 @@ module.exports.protectRoute=(req,res,next)=>{
                     req.cookies["login"]=""
 
                     const userId=decodeToken.payload
-                    let signature=jwt.sign({payload:userId}, secret_key, {expiresIn:"35s"})
+                    let signature=jwt.sign({payload:userId}, process.env.secret_key, {expiresIn:"35s"})
                     res.cookie("login",signature,{ httpOnly: false, maxAge: new Date(Date.now() + 1000 * 30) })
 
                     req.id=userId
@@ -39,7 +38,7 @@ module.exports.verifyToken = (req, res, next) => {
         // console.log("always-token-->**", token)
 
         if (token) {
-            jwt.verify(String(token), secret_key, (err, decodeToken) => {
+            jwt.verify(String(token), process.env.secret_key, (err, decodeToken) => {
                 if (err) {
                     console.log("Error occurred, maybe token expired -->", err);
                     return res.status(400).json({ message: err.message, status: false });
@@ -65,7 +64,7 @@ module.exports.refreshToken=(req,res,next)=>{
         const prevToken = cookies.split("=")[1];
         
         if(prevToken){
-            jwt.verify(String(prevToken), secret_key,
+            jwt.verify(String(prevToken), process.env.secret_key,
                 (err,decodeToken)=>{
                     if(err){
                         console.log("pehle toh sahi token bhejo-->",err)
@@ -76,7 +75,7 @@ module.exports.refreshToken=(req,res,next)=>{
                     req.cookies["login"]=""
                     
                     let uid=decodeToken.payload
-                    let signature=jwt.sign({payload:uid}, secret_key, {expiresIn:"35s"})
+                    let signature=jwt.sign({payload:uid}, process.env.secret_key, {expiresIn:"35s"})
                 
                     req.id=uid
                     res.cookie("login",signature,{ httpOnly: false, maxAge: new Date(Date.now() + 1000 * 30) })

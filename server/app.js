@@ -7,14 +7,12 @@ const postRoutes=require("./routes/postRoutes")
 const userRoutes=require("./routes/userRoutes")
 const commentPostRoutes=require("./routes/commentPostRoutes")
 const commentReelRoutes=require("./routes/commentReelRoutes")
-
-
 const cookieParser = require("cookie-parser");
-const {DB_LINK}=require("./credentials")
+require("dotenv").config()
 
 app=express()
 
-mongoose.connect(DB_LINK)
+mongoose.connect(process.env.DB_LINK)
 .then((db) =>console.log("database connected!!"))
 .catch(err => console.log(err))
 

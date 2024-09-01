@@ -1,7 +1,6 @@
 const User=require('../models/authModel')
 const bcrypt=require("bcrypt")
 const jwt=require("jsonwebtoken")
-const {secret_key}=require("../credentials")
 const maxAge = 3 * 24 * 60 * 60;
 
 module.exports.normalFunc=async(req,res)=>{
@@ -30,7 +29,7 @@ module.exports.login=async(req,res)=>{
             const auth=await bcrypt.compare(password, user.password)
             if(auth){
                 let uid=user['_id']
-                let signature=jwt.sign({payload:uid}, secret_key, {expiresIn:"35s"})
+                let signature=jwt.sign({payload:uid}, process.env.secret_key, {expiresIn:"35s"})
                 console.log("token-->",signature)
                 if(req.cookies["login"]){
                     req.cookies["login"]=""
@@ -61,7 +60,7 @@ module.exports.logout=async(req,res)=>{
             return res.status(400).json({ message: "Couldn't find token" });
         }
 
-        jwt.verify(String(prevToken), secret_key, (err, user) => {
+        jwt.verify(String(prevToken), process.env.secret_key, (err, user) => {
             if (err) {
                 console.log(err);
                 return res.status(403).json({ message: "Authentication failed" });
@@ -70,28 +69,6 @@ module.exports.logout=async(req,res)=>{
             req.cookies["login"] = "";
             return res.status(200).json({ message: "Successfully Logged Out" });  
   });
-    }catch(err){
-        return res.status(404).json({err, status:false})
-    }
-}
-
-module.exports.verify=async(req,res)=>{
-    try{
-        const token = req.body.token;
-
-        if (token) {
-            jwt.verify(String(token), secret_key, (err, decodeToken) => {
-                if (err) {
-                    console.log("Error occurred, maybe token expired -->", err);
-                    return res.status(400).json({ message: err.message, status: false });
-                }
-                
-                return res.status(200).json({status:true})
-            });
-        } else {
-            console.log("Invalid cookie in verifyToken");
-            return res.status(400).json({ message: "Invalid cookie!!", status: false });
-        }
     }catch(err){
         return res.status(404).json({err, status:false})
     }
