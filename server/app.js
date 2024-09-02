@@ -17,9 +17,13 @@ mongoose.connect(process.env.DB_LINK)
 .then((db) =>console.log("database connected!!"))
 .catch(err => console.log(err))
 
+// https://travelsaga-frontend.vercel.app
+
+
+
 app.use(
   cors({
-    origin: ["https://travelsaga-frontend.vercel.app"],
+    origin: ["http://localhost:3000"],
     methods: ["GET", "POST","PUT"],
     credentials: true,
   })
