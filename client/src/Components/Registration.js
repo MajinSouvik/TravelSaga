@@ -42,7 +42,7 @@ const Registration = () => {
     if (!imageFile) return;
 
     const storageRef = ref(storage, `upload/${imageFile.name+v4()}`);  // Reference to the file location in Firebase storage
-
+    console.log("storageRef-->", storageRef)
     try {
       const snapshot = await uploadBytes(storageRef, imageFile);
       const downloadURL = await getDownloadURL(snapshot.ref);
