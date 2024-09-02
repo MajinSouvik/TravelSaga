@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import Short from "./Short";
+import { API } from "../utils/constants";
 import ReelCommentModal from "./ReelCommentModal";
 
 axios.defaults.withCredentials = true;
@@ -15,7 +16,7 @@ function Shorts() {
 
   const getReels = async () => {
     try {
-      const response = await axios.get("https://travelsaga-frontend.vercel.app/reels/get-reels");
+      const response = await axios.get(API+"reels/get-reels");
       setReels(response.data.reels);
     } catch (error) {
       console.error("Error fetching reels:", error);

@@ -12,6 +12,7 @@ import AttachFileOutlinedIcon from "@mui/icons-material/AttachFileOutlined";
 import PlayArrowOutlinedIcon from "@mui/icons-material/PlayArrowOutlined";
 import CloseIcon from "@mui/icons-material/Close";
 import {openSlice} from "../redux/slideSlice"
+import { API } from "../utils/constants";
 
 axios.defaults.withCredentials = true;
 
@@ -39,7 +40,7 @@ function PopUpCreate({ close }) {
   }, [close]);
 
   const getPosts = async () => {
-    const posts = await axios.get("https://travelsaga-frontend.vercel.app/posts/get-posts");
+    const posts = await axios.get(API+"posts/get-posts");
     console.log("posts in feeds-->", posts);
     dispatch(setFeed(posts.data.posts));
   };
@@ -102,7 +103,7 @@ function PopUpCreate({ close }) {
       description: "My second post!!",
       files: filess,
     };
-    await axios.post("https://travelsaga-frontend.vercel.app/posts/upload/", {
+    await axios.post(API+"posts/upload/", {
       ...values,
     });
   };
@@ -116,7 +117,7 @@ function PopUpCreate({ close }) {
       files: finalFiles,
     };
 
-    const resp = await axios.post("https://travelsaga-frontend.vercel.app/reels/upload/", {
+    const resp = await axios.post(API+"reels/upload/", {
       ...values,
     });
 

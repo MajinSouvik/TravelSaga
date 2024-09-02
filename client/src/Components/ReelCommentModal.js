@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { API } from '../utils/constants';
 import axios from 'axios';
 
 function ReelCommentModal({ reelId, onClose }) {
@@ -8,7 +9,7 @@ function ReelCommentModal({ reelId, onClose }) {
   useEffect(() => {
     const fetchComments = async () => {
       try {
-        const response = await axios.get("https://travelsaga-frontend.vercel.app/reel-comment/all-comments", {
+        const response = await axios.get(API+"reel-comment/all-comments", {
           params: { reelID: reelId },
         });
         setComments(response.data.comments);
@@ -24,7 +25,7 @@ function ReelCommentModal({ reelId, onClose }) {
     e.preventDefault();
     if (newComment.trim()) {
       try {
-        const resp = await axios.post("https://travelsaga-frontend.vercel.app/reel-comment/add", {
+        const resp = await axios.post(API+"reel-comment/add", {
           comment: newComment,
           reelID: reelId,
         });

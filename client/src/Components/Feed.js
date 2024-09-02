@@ -8,6 +8,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import CommentIcon from '@mui/icons-material/Comment';
 import SendIcon from '@mui/icons-material/Send';
 import Post from "./Post";
+import { API } from "../utils/constants";
 
 axios.defaults.withCredentials = true;
 
@@ -25,7 +26,7 @@ function Feed(props) {
   const observerRef = useRef(null);
 
   const getPost = async () => {
-    const resp = await axios.get("https://travelsaga-frontend.vercel.app/posts/get-post/", {
+    const resp = await axios.get(API+"posts/get-post/", {
       "params": { "ID": props.feedID }
     });
     setPost(resp.data.post);
@@ -33,7 +34,7 @@ function Feed(props) {
   };
 
   const likeDislikePost = async () => {
-    const resp = await axios.put("https://travelsaga-frontend.vercel.app/posts/like-dislike/", {
+    const resp = await axios.put(API+"posts/like-dislike/", {
       postId: props.feedID
     });
 

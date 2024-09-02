@@ -4,6 +4,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import CommentIcon from '@mui/icons-material/Comment';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import axios from "axios";
+import { API } from '../utils/constants';
 axios.defaults.withCredentials = true;
 
 function Short({ reelID, src, name, comment, inView, onCommentClick,onOpenCommentModal }) {
@@ -22,7 +23,7 @@ function Short({ reelID, src, name, comment, inView, onCommentClick,onOpenCommen
   }, [inView]);
 
   const likeDislikeReel=async()=>{
-    const resp = await axios.put("https://travelsaga-frontend.vercel.app/reels/like-dislike/", {
+    const resp = await axios.put(API+"reels/like-dislike/", {
       reelId: reelID
     });
 

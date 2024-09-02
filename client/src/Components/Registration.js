@@ -6,6 +6,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import {v4} from "uuid"
 import {storage} from "../firebase"
+import {API} from "../utils/constants"
 import {ref, uploadBytes, getDownloadURL} from "firebase/storage"
 
 const FormContainer = styled(Container)(() => ({
@@ -55,7 +56,7 @@ const Registration = () => {
   const sendRequest = async (imageURL) => {
     try {
       const res = await axios
-      .post("https://travelsaga-frontend.vercel.app/auth/register", {
+      .post(API+"auth/register", {
         username: usernameRef.current.value,
         password: passwordRef.current.value,
         profilePic: imageURL

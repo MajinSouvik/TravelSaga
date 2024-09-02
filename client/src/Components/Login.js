@@ -126,6 +126,7 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { login } from "../redux/authSlice";
+import { API } from '../utils/constants';
 
 const FormContainer = styled(Container)(() => ({
   display: 'flex',
@@ -146,7 +147,7 @@ const Login = () => {
 
   const sendRequest = async () => {
     try {
-      const res = await axios.post("https://travelsaga-backend.vercel.app/auth/login", {
+      const res = await axios.post(API+"auth/login", {
         username: usernameRef.current.value,
         password: passwordRef.current.value,
       });

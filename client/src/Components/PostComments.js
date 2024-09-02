@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import {API} from "../utils/constants"
 axios.defaults.withCredentials = true;
 
 const PostComments = ({ feedID }) => {
@@ -9,7 +10,7 @@ const PostComments = ({ feedID }) => {
   useEffect(() => {
     const getAll = async () => {
       const post = await axios.get(
-        "https://travelsaga-frontend.vercel.app/post-comment/all-comments",
+        API+"post-comment/all-comments",
         {
           params: { postID: feedID },
         }
@@ -31,7 +32,7 @@ const PostComments = ({ feedID }) => {
     e.preventDefault();
 
     const resp = await axios.post(
-      "https://travelsaga-frontend.vercel.app/post-comment/add",
+      API+"post-comment/add",
       { comment: newComment, postID: feedID }
     );
 

@@ -13,6 +13,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import TravelExploreIcon from '@mui/icons-material/TravelExplore';
 import VideoLibraryIcon from '@mui/icons-material/VideoLibrary';
 import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
+import { API } from "../utils/constants";
 import axios from "axios";
 
 axios.defaults.withCredentials = true;
@@ -43,7 +44,7 @@ function Features() {
 
   const getFilteredReels = async () => {
     try {
-      const resp = await axios.get("https://travelsaga-frontend.vercel.app/reels/filtered-reels/", {
+      const resp = await axios.get(API+"reels/filtered-reels/", {
         params: { place: "Dubai" },
       });
       dispatch(setFeed(resp.data.reels));
@@ -65,7 +66,7 @@ function Features() {
 
   const handleLogout = async () => { // Renamed function to avoid naming conflict
     try {
-      await axios.post("https://travelsaga-frontend.vercel.app/auth/logout");
+      await axios.post(API+"auth/logout");
       dispatch(logoutAction()); // Use renamed import
       navigate("/login");
     } catch (err) {
