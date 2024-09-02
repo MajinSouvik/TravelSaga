@@ -24,11 +24,12 @@ mongoose.connect(process.env.DB_LINK)
 app.use(
   cors({
     origin: ["https://travelsaga-frontend.vercel.app"],
-    methods: ["GET", "POST","PUT"],
+    methods: ["GET", "POST","PUT","OPTIONS","DELETE","PATCH"],
     credentials: true,
   })
 );
 
+app.options('*', cors()); // Include this line to handle preflight requests
 // app.use(cors())
 
 
