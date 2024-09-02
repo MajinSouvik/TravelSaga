@@ -20,10 +20,10 @@ mongoose.connect(process.env.DB_LINK)
 // https://travelsaga-frontend.vercel.app
 
 
-
+// http://localhost:3000
 app.use(
   cors({
-    origin: ["http://localhost:3000"],
+    origin: ["https://travelsaga-frontend.vercel.app"],
     methods: ["GET", "POST","PUT"],
     credentials: true,
   })
