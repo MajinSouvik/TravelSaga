@@ -11,15 +11,15 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require('body-parser');
 require("dotenv").config()
 
-app=express()
+const app=express()
 
 mongoose.connect(process.env.DB_LINK)
 .then((db) =>console.log("database connected!!"))
 .catch(err => console.log(err))
 
 // https://travelsaga-frontend.vercel.app
-
-
+// https://travelsaga-frontend.vercel.app
+// https://travelsaga-backend.vercel.app/auth/register
 // http://localhost:3000
 app.use(
   cors({
