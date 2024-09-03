@@ -34,7 +34,7 @@ module.exports.login=async(req,res)=>{
                 if(req.cookies["login"]){
                     req.cookies["login"]=""
                 }
-                res.cookie("login",signature,{ httpOnly: false, maxAge: new Date(Date.now() + 1000 * 30) })
+                res.cookie("login",signature,{ httpOnly: false, maxAge: new Date(Date.now() + 1000 * 30),sameSite:'none' ,secure:true})
                 return res.status(200).json({status:true, user, signature})
             }else{
                 const error="Incorrect Password!!"
