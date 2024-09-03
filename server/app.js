@@ -22,22 +22,19 @@ mongoose.connect(process.env.DB_LINK)
 // https://travelsaga-backend.vercel.app/auth/register
 // http://localhost:3000
 // https://travel-saga-frontend.vercel.app/login
-const corsOptions = {
-  origin: 'https://travel-saga-frontend.vercel.app', // Replace with your actual frontend URL
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['X-CSRF-Token', 'X-Requested-With', 'Content-Type', 'Authorization'],
-  credentials: true,
-};
+// https://travel-saga-frontend.vercel.app
+// const corsOptions = {
+//   origin: 'http://localhost:3000', // Replace with your actual frontend URL
+//   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+//   allowedHeaders: ['X-CSRF-Token', 'X-Requested-With', 'Content-Type', 'Authorization'],
+//   credentials: true,
+// };
 
-app.use(cors(corsOptions))
+// app.use(cors(corsOptions))
 
-app.options('*', cors(corsOptions)); // Include this line to handle preflight requests
-// app.use(cors())
-
-
+// app.options('*', cors(corsOptions)); 
+app.use(cors())
 app.use(express.json())
-// app.use(bodyParser.urlencoded({extended:false}));
-// app.use(bodyParser.json());
 app.use(cookieParser());
 
 app.use("/auth",  authRoutes)
