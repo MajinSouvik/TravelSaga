@@ -21,9 +21,9 @@ mongoose.connect(process.env.DB_LINK)
 // https://travelsaga-frontend.vercel.app
 // https://travelsaga-backend.vercel.app/auth/register
 // http://localhost:3000
-
+// https://travel-saga-frontend.vercel.app/login
 const corsOptions = {
-  origin: 'https://travelsaga-frontend.vercel.app', // Replace with your actual frontend URL
+  origin: 'https://travel-saga-frontend.vercel.app', // Replace with your actual frontend URL
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['X-CSRF-Token', 'X-Requested-With', 'Content-Type', 'Authorization'],
   credentials: true,
