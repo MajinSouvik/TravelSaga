@@ -1,4 +1,4 @@
-export const API="http://localhost:8000/"
+export const API="https://travelsaga-backend.onrender.com/"
 // https://travel-saga-backend.vercel.app/
 
 // https://travel-saga-backend.vercel.app/
