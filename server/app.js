@@ -26,10 +26,12 @@ app.use(
     origin: ["https://travelsaga-frontend.vercel.app"],
     methods: ["GET", "POST","PUT","OPTIONS","DELETE","PATCH"],
     credentials: true,
+    preflightContinue: false,
+    optionsSuccessStatus: 204
   })
 );
 
-app.options('*', cors()); // Include this line to handle preflight requests
+app.options('/*', cors()); // Include this line to handle preflight requests
 // app.use(cors())
 
 
