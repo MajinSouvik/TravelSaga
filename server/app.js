@@ -17,12 +17,6 @@ mongoose.connect(process.env.DB_LINK)
 .then((db) =>console.log("database connected!!"))
 .catch(err => console.log(err))
 
-// https://travelsaga-frontend.vercel.app
-// https://travelsaga-frontend.vercel.app
-// https://travelsaga-backend.vercel.app/auth/register
-// http://localhost:3000
-// https://travel-saga-frontend.vercel.app/login
-// https://travel-saga-frontend.vercel.app
 const corsOptions = {
   origin: 'https://travelsaga.onrender.com', // Replace with your actual frontend URL
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -30,6 +24,8 @@ const corsOptions = {
   credentials: true,
 };
 
+// http://localhost:3000
+// https://travelsaga.onrender.com
 app.use(cors(corsOptions))
 
 app.options('*', cors(corsOptions)); 
