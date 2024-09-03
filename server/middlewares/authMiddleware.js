@@ -23,9 +23,11 @@ module.exports.protectRoute=(req,res,next)=>{
                     next()
                     })
                 }else{
+                    console.log("something definately wrong in authmiddleware..")
                     return res.status(400).json({message:"Invalid cookie!!",status:false})
         }  
     }catch(err){
+        console.log("auth Middleware Error-->", err)
         return res.status(400).json({message:"User not authenticated!!",status:false})
     }
 }
