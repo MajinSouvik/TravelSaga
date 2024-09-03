@@ -53,20 +53,41 @@ const Registration = () => {
     }
   };
 
+  // const sendRequest = async (imageURL) => {
+  //   try {
+  //     const res = await axios
+  //     .post(API+"auth/register", {
+  //       username: usernameRef.current.value,
+  //       password: passwordRef.current.value,
+  //       profilePic: imageURL
+  //     })
+
+  //     return res.data;
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
+
   const sendRequest = async (imageURL) => {
     try {
-      const res = await axios
-      .post(API+"auth/register", {
+      const res = await axios.post(`${API}auth/register`, JSON.stringify({
         username: usernameRef.current.value,
         password: passwordRef.current.value,
-        profilePic: imageURL
-      })
+        profilePic: imageURL,
+      }), {
+        headers: {
+          'Content-Type': 'text/plain', // Set to text/plain
+        }
+      });
 
       return res.data;
     } catch (err) {
       console.error(err);
     }
   };
+
+  
+
 
   const handleSubmit = async(e) => {
     e.preventDefault();
